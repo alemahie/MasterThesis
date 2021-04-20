@@ -1,0 +1,55 @@
+
+Data-driven with supervised learning:
+-	Common spatial patterns (CSP)
+-	xDAWN
+
+Linear classifiers:
+-	Linear discriminant analysis (LDA)
+-	Regularized LDA
+-	Support vector machines (SVMs)
+
+Multiple classification models:
+-	Ridge regression
+-	CNN
+-	LSTM
+
+Studies that focus on the visual information extracted from EEG:
+-	Automatic image annotation using a CNN with an EEGNet architecture.
+-	Image reconstruction methods
+-	Neural networks (CNN and recurrent NN) for EEEG classification tasks
+-	Support vector machine (SVM), k-Nearest neighbor (k-NN), multi-layer perceptron artificial neural network (MLP-ANN) and logistic regression (LR) to extract the meaningful EEG signal patterns from a large volume of poor-quality data having artifacts noises.
+-	EEG decoding and visualization, deep learning with convolutional neural networks.
+
+Classification:
+Independent component analysis (ICA) module and a classifier layer.
+
+Two classifiers:
+-	SoftMax
+-	Multiclass support vector machine (SVM)
+
+Classification performance of three different classifiers:
+-	Linear discriminant analysis
+-	Support Vector machine
+-	K-nearest neighbors
+
+Classification methods:
+-	K-Nearest neighbors (KNN)
+-	Decision tree
+-	SVM (support vector machine)
+-	Softmax classifier
+
+Classification methods compared:
+-	CNN-SAE (Convolutional neural network and stacked autoencoder)
+-	CSP (Common spatial pattern)
+-	ACSP (Adaptive common spatial pattern)
+-	DBN (Deep belief net)
+-	CWT-SCNN
+
+Other classification methods: (combination)
+-	CWT-SCNN
+-	CSP-SCNN (Common spatial patten & Simplified Convolutional Neural Network)
+-	FFT-SCNN (Fast Fourier transform)
+-	STFT-SCNN (short time Fourier transform)
+
+
+Evaluate the classification performance: Kappa value.
