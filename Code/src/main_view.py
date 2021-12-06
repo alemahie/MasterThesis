@@ -34,7 +34,7 @@ class mainView(QMainWindow):
         for i, info in enumerate(self.info_labels):
             self.grid_layout.addWidget(QLabel(info), i, 0)
         for i in range(12):
-            self.grid_layout.addWidget(QLabel(str(i)), i, 1)
+            self.grid_layout.addWidget(QLabel("/"), i, 1)
 
         self.setCentralWidget(self.centralWidget)
 

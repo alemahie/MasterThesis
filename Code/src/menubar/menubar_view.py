@@ -4,10 +4,9 @@
 """
 Main controller
 """
-import sys
 
 from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenuBar, QMenu
+from PySide6.QtWidgets import QMenuBar, QMenu, QFileDialog
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -56,18 +55,18 @@ class menubarView(QMenuBar):
         self.helpMenu.addAction(aboutAction)
 
     def open_cnt_file_trigger(self):
-        path_to_file = "D:/Cours/Memoire/MasterThesis/Code/data/cnt/20200707_1208_pronation.cnt"
-        self.listener.open_cnt_file_clicked(path_to_file)
+        path_to_file = QFileDialog().getOpenFileName(self, "Open file", "*.cnt")
+        self.listener.open_cnt_file_clicked(path_to_file[0])
 
     def open_set_file_trigger(self):
-        path_to_file = "D:/Cours/Memoire/MasterThesis/Code/data/set/A1 ICAout 8 24 46 epochs_ALL_clean.set"
-        self.listener.open_set_file_clicked(path_to_file)
+        path_to_file = QFileDialog().getOpenFileName(self, "Open file", "*.set")
+        self.listener.open_set_file_clicked(path_to_file[0])
 
     def save_file_trigger(self):
         self.listener.save_file_clicked()
 
     def exit_program_trigger(self):
-        sys.exit(0)
+        self.listener.exit_program_clicked()
 
     def help_trigger(self):
         print("HELP")

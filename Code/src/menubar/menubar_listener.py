@@ -29,3 +29,7 @@ class menubarListener(ABC):
     @abstractmethod
     def save_file_clicked(self):
         pass
+
+    @abstractmethod
+    def exit_program_clicked(self):
+        pass

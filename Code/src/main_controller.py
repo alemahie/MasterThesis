@@ -50,6 +50,8 @@ class mainController(mainListener):
 
     def open_set_file_clicked(self, path_to_file):
         self.mainModel.open_set_file(path_to_file)
+        all_info = self.mainModel.get_all_displayed_info()
+        self.mainView.display_info(all_info)
 
     def save_file_clicked(self):
         print("save main")

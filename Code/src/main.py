@@ -17,6 +17,4 @@ __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
 if __name__ == "__main__":
-    print("Start")
     application = mainController()
-    print("End")

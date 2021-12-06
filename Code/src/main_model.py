@@ -6,6 +6,7 @@ Main model
 """
 
 from mne.io import read_raw_eeglab, read_epochs_eeglab
+from os.path import getsize
 
 from utils import cnt_file_reader
 
@@ -31,15 +32,19 @@ class mainModel:
         self.file_path_name = path_to_file
 
     def open_set_file(self, path_to_file):
-        mne_item = read_raw_eeglab(path_to_file)
-        print(mne_item)
-
-        mne_item_2 = read_epochs_eeglab(path_to_file)
-        print(mne_item_2)
+        try:
+            mne_item = read_raw_eeglab(path_to_file)
+            self.file_type = "Raw"
+        except:
+            mne_item = read_epochs_eeglab(path_to_file)
+            self.file_type = "Epochs"
+        self.file_data = mne_item
+        self.file_path_name = path_to_file
 
     """
     Getters
     """
+
     def get_all_displayed_info(self):
         all_info = [self.get_file_path_name(), self.get_file_type(), self.get_number_of_channels(),
                     self.get_sampling_frequency(), self.get_number_of_epochs(), self.get_epochs_start(),
@@ -60,19 +65,22 @@ class mainModel:
         return self.file_data.info.get("sfreq")
 
     def get_number_of_epochs(self):
-        return 1
+        if self.file_type == "Raw":
+            return 1
+        else:
+            return len(self.file_data)
 
     def get_epochs_start(self):
-        return 0
+        return round(self.file_data.times[0], 3)
 
     def get_epochs_end(self):
-        return 0
+        return round(self.file_data.times[-1], 3)
 
     def get_number_of_frames(self):
-        return self.file_data.times
+        return len(self.file_data.times)
 
     def get_reference(self):
-        return None
+        return "Unknown"
 
     def get_channels_locations(self):
         return "Montage 10-05"
@@ -81,5 +89,7 @@ class mainModel:
         return False
 
     def get_dataset_size(self):
-        return 0
-
+        if self.file_path_name[-3:] == "set":
+            return round(getsize(self.file_path_name[:-3]+"fdt") / (1024 ** 2), 3)
+        else:
+            return round(getsize(self.file_path_name) / (1024 ** 2), 3)

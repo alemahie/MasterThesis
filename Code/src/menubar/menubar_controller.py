@@ -5,7 +5,9 @@
 Main controller
 """
 
-from menubar import menubar_model, menubar_view, menubar_listener
+import sys
+
+from menubar import menubar_view, menubar_listener
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -20,7 +22,6 @@ __status__ = "Dev"
 class menubarController(menubar_listener.menubarListener):
     def __init__(self):
         self.listener = None
-        self.toolbarModel = menubar_model.menubarModel()
         self.toolbarView = menubar_view.menubarView()
         self.toolbarView.set_listener(self)
 
@@ -34,7 +35,7 @@ class menubarController(menubar_listener.menubarListener):
         self.listener.save_file_clicked()
 
     def exit_program_clicked(self):
-        print("exit")
+        sys.exit(0)
 
     def set_listener(self, main_listener):
         self.listener = main_listener
