@@ -66,11 +66,18 @@ class mainController(mainListener):
         self.mainModel.open_set_file(path_to_file)
         self.display_all_info()
 
-    def save_file_clicked(self, path_to_file):
-        self.mainModel.save_fif_file(path_to_file)
+    def save_file_clicked(self):
+        if self.mainModel.is_fif_file():
+            path_to_file = self.mainModel.get_file_path_name()
+        else:
+            path_to_file = self.mainView.get_path_to_file()
+        self.mainModel.save_file(path_to_file)
+        self.mainView.update_path_to_file(self.mainModel.get_file_path_name())
 
-    def save_file_as_clicked(self, path_to_file):
-        self.mainModel.save_fif_file(path_to_file)
+    def save_file_as_clicked(self):
+        path_to_file = self.mainView.get_path_to_file()
+        self.mainModel.save_file_as(path_to_file)
+        self.mainView.update_path_to_file(self.mainModel.get_file_path_name())
 
     def filter_clicked(self):
         all_channels_names = self.mainModel.get_all_channels_names()

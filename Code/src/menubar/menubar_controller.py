@@ -41,11 +41,11 @@ class menubarController(menubarListener):
     def open_set_file_clicked(self, path_to_file):
         self.mainListener.open_set_file_clicked(path_to_file)
 
-    def save_file_clicked(self, path_to_file):
-        self.mainListener.save_file_clicked(path_to_file)
+    def save_file_clicked(self):
+        self.mainListener.save_file_clicked()
 
-    def save_file_as_clicked(self, path_to_file):
-        self.mainListener.save_file_as_clicked(path_to_file)
+    def save_file_as_clicked(self):
+        self.mainListener.save_file_as_clicked()
 
     def exit_program_clicked(self):
         sys.exit(0)

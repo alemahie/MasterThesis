@@ -53,11 +53,18 @@ class mainModel:
         self.file_data = mne_item
         self.file_path_name = path_to_file
 
-    def save_fif_file(self, path_to_file):
-        if self.file_type == "Raw":
-            self.file_data.save(path_to_file + "-raw.fif")
+    def save_file(self, path_to_file):
+        if self.is_fif_file():
+            self.file_data.save(path_to_file, overwrite=True)
         else:
-            self.file_data.save(path_to_file + "-epo.fif")
+            self.save_file_as(path_to_file)
+
+    def save_file_as(self, path_to_file):
+        if self.file_type == "Raw":
+            self.file_path_name = path_to_file + "-raw.fif"
+        else:
+            self.file_path_name = path_to_file + "-epo.fif"
+        self.file_data.save(self.file_path_name)
 
     def filter(self, low_frequency, high_frequency, channels_selected):
         self.file_data.filter(l_freq=low_frequency, h_freq=high_frequency, picks=channels_selected)
@@ -67,6 +74,9 @@ class mainModel:
 
     def re_referencing(self):
         print("Re-referencing")
+
+    def is_fif_file(self):
+        return self.file_path_name[-3:] == "fif"
 
     """
     Getters

@@ -128,12 +128,10 @@ class menubarView(QMenuBar):
         self.menubarListener.open_set_file_clicked(path_to_file[0])
 
     def save_file_trigger(self):
-        path_to_file = QFileDialog().getSaveFileName(self, "Save file")
-        self.menubarListener.save_file_clicked(path_to_file[0])
+        self.menubarListener.save_file_clicked()
 
     def save_file_as_trigger(self):
-        path_to_file = QFileDialog().getSaveFileName(self, "Save file as")
-        self.menubarListener.save_file_clicked(path_to_file[0])
+        self.menubarListener.save_file_as_clicked()
 
     def exit_program_trigger(self):
         self.menubarListener.exit_program_clicked()

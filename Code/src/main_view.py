@@ -5,7 +5,7 @@
 Main view
 """
 
-from PySide6.QtWidgets import QMainWindow, QGridLayout, QLabel, QWidget
+from PySide6.QtWidgets import QMainWindow, QGridLayout, QLabel, QWidget, QFileDialog
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -42,3 +42,14 @@ class mainView(QMainWindow):
         for i in range(12):
             label_item = self.grid_layout.itemAtPosition(i, 1).widget()
             label_item.setText(str(all_info[i]))
+
+    def update_path_to_file(self, path_to_file):
+        label_item = self.grid_layout.itemAtPosition(0, 1).widget()
+        label_item.setText(path_to_file)
+
+    """
+    Getters
+    """
+    def get_path_to_file(self):
+        path_to_file = QFileDialog().getSaveFileName(self, "Save file as")
+        return path_to_file[0]
