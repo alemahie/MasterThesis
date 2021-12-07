@@ -43,6 +43,10 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def filter_information(self, low_frequency, high_frequency, channels_selected):
+        pass
+
+    @abstractmethod
     def resampling_clicked(self):
         pass
 

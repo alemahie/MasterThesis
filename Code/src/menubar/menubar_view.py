@@ -107,8 +107,8 @@ class menubarView(QMenuBar):
 
     def enable_menu_when_file_loaded(self):
         menu_actions = self.fileMenu.actions()
-        menu_actions[1].setEnabled(True)    # Save
-        menu_actions[2].setEnabled(True)    # Save As
+        menu_actions[2].setEnabled(True)    # Save
+        menu_actions[3].setEnabled(True)    # Save As
         self.editMenu.setEnabled(True)
         self.plotMenu.setEnabled(True)
 

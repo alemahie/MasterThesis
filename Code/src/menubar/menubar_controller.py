@@ -7,7 +7,8 @@ Main controller
 
 import sys
 
-from menubar import menubar_view, menubar_listener
+from menubar.menubar_listener import menubarListener
+from menubar.menubar_view import menubarView
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -19,10 +20,10 @@ __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
 
-class menubarController(menubar_listener.menubarListener):
+class menubarController(menubarListener):
     def __init__(self):
         self.mainListener = None
-        self.menubarView = menubar_view.menubarView()
+        self.menubarView = menubarView()
         self.menubarView.set_listener(self)
 
     def enable_menu_when_file_loaded(self):

@@ -73,11 +73,12 @@ class mainController(mainListener):
         self.mainModel.save_fif_file(path_to_file)
 
     def filter_clicked(self):
-        self.filterController = filterController()
-        lowFreq = 0.1
-        highFreq = 45
-        picks = None
-        # self.mainModel.filter(lowFreq, highFreq, picks)
+        all_channels_names = self.mainModel.get_all_channels_names()
+        self.filterController = filterController(all_channels_names)
+        self.filterController.set_listener(self)
+
+    def filter_information(self, low_frequency, high_frequency, channels_selected):
+        self.mainModel.filter(low_frequency, high_frequency, channels_selected)
 
     def resampling_clicked(self):
         self.mainModel.resampling()

@@ -59,8 +59,8 @@ class mainModel:
         else:
             self.file_data.save(path_to_file + "-epo.fif")
 
-    def filter(self, l_freq, h_freq, picks):
-        self.file_data.filter(l_freq=l_freq, h_freq=h_freq, picks=picks)
+    def filter(self, low_frequency, high_frequency, channels_selected):
+        self.file_data.filter(l_freq=low_frequency, h_freq=high_frequency, picks=channels_selected)
 
     def resampling(self):
         print("Resampling")
@@ -120,3 +120,6 @@ class mainModel:
             return round(getsize(self.file_path_name[:-3] + "fdt") / (1024 ** 2), 3)
         else:
             return round(getsize(self.file_path_name) / (1024 ** 2), 3)
+
+    def get_all_channels_names(self):
+        return self.file_data.ch_names
