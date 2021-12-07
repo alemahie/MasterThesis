@@ -12,7 +12,8 @@ from PySide6.QtWidgets import QApplication
 from main_model import mainModel
 from main_view import mainView
 from main_listener import mainListener
-from menubar import menubar_controller
+from menubar.menubar_controller import menubarController
+from edit.filter.filter_controller import filterController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -34,28 +35,62 @@ class mainController(mainListener):
         self.screen_size = self.get_screen_geometry()
         self.mainView.resize(0.8*self.screen_size.width(), 0.8*self.screen_size.height())
 
-        self.toolbarController = menubar_controller.menubarController()
-        self.toolbarController.set_listener(self)
-        self.toolbarView = self.toolbarController.get_view()
-        self.mainView.setMenuBar(self.toolbarView)
+        self.menubarController = menubarController()
+        self.menubarController.set_listener(self)
+        self.menubarView = self.menubarController.get_view()
+        self.mainView.setMenuBar(self.menubarView)
+
+        self.filterController = None
 
         self.mainView.show()
 
         sys.exit(self.app.exec())
 
-    def open_cnt_file_clicked(self, path_to_file):
-        self.mainModel.open_cnt_file(path_to_file)
+    def display_all_info(self):
         all_info = self.mainModel.get_all_displayed_info()
         self.mainView.display_info(all_info)
+        self.menubarController.enable_menu_when_file_loaded()
+
+    """
+    Menu Buttons Clicked
+    """
+    def open_fif_file_clicked(self, path_to_file):
+        self.mainModel.open_fif_file(path_to_file)
+        self.display_all_info()
+
+    def open_cnt_file_clicked(self, path_to_file):
+        self.mainModel.open_cnt_file(path_to_file)
+        self.display_all_info()
 
     def open_set_file_clicked(self, path_to_file):
         self.mainModel.open_set_file(path_to_file)
-        all_info = self.mainModel.get_all_displayed_info()
-        self.mainView.display_info(all_info)
+        self.display_all_info()
 
-    def save_file_clicked(self):
-        print("save main")
+    def save_file_clicked(self, path_to_file):
+        self.mainModel.save_fif_file(path_to_file)
 
+    def save_file_as_clicked(self, path_to_file):
+        self.mainModel.save_fif_file(path_to_file)
+
+    def filter_clicked(self):
+        self.filterController = filterController()
+        lowFreq = 0.1
+        highFreq = 45
+        picks = None
+        # self.mainModel.filter(lowFreq, highFreq, picks)
+
+    def resampling_clicked(self):
+        self.mainModel.resampling()
+
+    def re_referencing_clicked(self):
+        self.mainModel.re_referencing()
+
+    def plot_data_clicked(self):
+        print("Plot data")
+
+    """
+    Getters
+    """
     def get_screen_geometry(self):
         screen = self.app.primaryScreen()
         size = screen.size()

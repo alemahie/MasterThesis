@@ -21,24 +21,60 @@ __status__ = "Dev"
 
 class menubarController(menubar_listener.menubarListener):
     def __init__(self):
-        self.listener = None
-        self.toolbarView = menubar_view.menubarView()
-        self.toolbarView.set_listener(self)
+        self.mainListener = None
+        self.menubarView = menubar_view.menubarView()
+        self.menubarView.set_listener(self)
+
+    def enable_menu_when_file_loaded(self):
+        self.menubarView.enable_menu_when_file_loaded()
+
+    """
+    Menu buttons clicked
+    """
+    def open_fif_file_clicked(self, path_to_file):
+        self.mainListener.open_fif_file_clicked(path_to_file)
 
     def open_cnt_file_clicked(self, path_to_file):
-        self.listener.open_cnt_file_clicked(path_to_file)
+        self.mainListener.open_cnt_file_clicked(path_to_file)
 
     def open_set_file_clicked(self, path_to_file):
-        self.listener.open_set_file_clicked(path_to_file)
+        self.mainListener.open_set_file_clicked(path_to_file)
 
-    def save_file_clicked(self):
-        self.listener.save_file_clicked()
+    def save_file_clicked(self, path_to_file):
+        self.mainListener.save_file_clicked(path_to_file)
+
+    def save_file_as_clicked(self, path_to_file):
+        self.mainListener.save_file_as_clicked(path_to_file)
 
     def exit_program_clicked(self):
         sys.exit(0)
 
-    def set_listener(self, main_listener):
-        self.listener = main_listener
+    def filter_clicked(self):
+        self.mainListener.filter_clicked()
 
+    def resampling_clicked(self):
+        self.mainListener.resampling_clicked()
+
+    def re_referencing_clicked(self):
+        self.mainListener.re_referencing_clicked()
+
+    def plot_data_clicked(self):
+        self.mainListener.plot_data_clicked()
+
+    def help_clicked(self):
+        print("Help")
+
+    def about_clicked(self):
+        print("About")
+
+    """
+    Setters
+    """
+    def set_listener(self, main_listener):
+        self.mainListener = main_listener
+
+    """
+    Getters
+    """
     def get_view(self):
-        return self.toolbarView
+        return self.menubarView

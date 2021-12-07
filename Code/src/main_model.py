@@ -5,8 +5,10 @@
 Main model
 """
 
-from mne.io import read_raw_eeglab, read_epochs_eeglab
 from os.path import getsize
+
+from mne import read_epochs
+from mne.io import read_raw_fif, read_raw_eeglab, read_epochs_eeglab
 
 from utils import cnt_file_reader
 
@@ -26,6 +28,16 @@ class mainModel:
         self.file_type = None
         self.file_data = None
 
+    def open_fif_file(self, path_to_file):
+        print(path_to_file[-7:-4])
+        if path_to_file[-7:-4] == "raw":
+            self.file_type = "Raw"
+            self.file_data = read_raw_fif(path_to_file, preload=True)
+        else:
+            self.file_type = "Epochs"
+            self.file_data = read_epochs(path_to_file, preload=True)
+        self.file_path_name = path_to_file
+
     def open_cnt_file(self, path_to_file):
         self.file_data = cnt_file_reader.get_raw_from_cnt(path_to_file)
         self.file_type = "Raw"
@@ -33,13 +45,28 @@ class mainModel:
 
     def open_set_file(self, path_to_file):
         try:
-            mne_item = read_raw_eeglab(path_to_file)
+            mne_item = read_raw_eeglab(path_to_file, preload=True)
             self.file_type = "Raw"
         except:
             mne_item = read_epochs_eeglab(path_to_file)
             self.file_type = "Epochs"
         self.file_data = mne_item
         self.file_path_name = path_to_file
+
+    def save_fif_file(self, path_to_file):
+        if self.file_type == "Raw":
+            self.file_data.save(path_to_file + "-raw.fif")
+        else:
+            self.file_data.save(path_to_file + "-epo.fif")
+
+    def filter(self, l_freq, h_freq, picks):
+        self.file_data.filter(l_freq=l_freq, h_freq=h_freq, picks=picks)
+
+    def resampling(self):
+        print("Resampling")
+
+    def re_referencing(self):
+        print("Re-referencing")
 
     """
     Getters
@@ -90,6 +117,6 @@ class mainModel:
 
     def get_dataset_size(self):
         if self.file_path_name[-3:] == "set":
-            return round(getsize(self.file_path_name[:-3]+"fdt") / (1024 ** 2), 3)
+            return round(getsize(self.file_path_name[:-3] + "fdt") / (1024 ** 2), 3)
         else:
             return round(getsize(self.file_path_name) / (1024 ** 2), 3)

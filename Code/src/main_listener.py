@@ -19,6 +19,10 @@ __status__ = "Dev"
 
 class mainListener(ABC):
     @abstractmethod
+    def open_fif_file_clicked(self, path_to_file):
+        pass
+
+    @abstractmethod
     def open_cnt_file_clicked(self, path_to_file):
         pass
 
@@ -27,5 +31,25 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
-    def save_file_clicked(self):
+    def save_file_clicked(self, path_to_file):
+        pass
+
+    @abstractmethod
+    def save_file_as_clicked(self, path_to_file):
+        pass
+
+    @abstractmethod
+    def filter_clicked(self):
+        pass
+
+    @abstractmethod
+    def resampling_clicked(self):
+        pass
+
+    @abstractmethod
+    def re_referencing_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_data_clicked(self):
         pass
