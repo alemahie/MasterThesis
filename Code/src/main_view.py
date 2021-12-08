@@ -26,17 +26,17 @@ class mainView(QMainWindow):
                             "Number of Frames/Frames per Epoch : ", "Reference : ", "Channel Locations : ",
                             "ICA : ", "Dataset Size (Mb) : "]
 
-        self.centralWidget = QWidget()
+        self.central_widget = QWidget()
 
         self.grid_layout = QGridLayout(self)
-        self.centralWidget.setLayout(self.grid_layout)
+        self.central_widget.setLayout(self.grid_layout)
 
         for i, info in enumerate(self.info_labels):
             self.grid_layout.addWidget(QLabel(info), i, 0)
         for i in range(12):
             self.grid_layout.addWidget(QLabel("/"), i, 1)
 
-        self.setCentralWidget(self.centralWidget)
+        self.setCentralWidget(self.central_widget)
 
     def display_info(self, all_info):
         for i in range(12):
@@ -46,6 +46,14 @@ class mainView(QMainWindow):
     def update_path_to_file(self, path_to_file):
         label_item = self.grid_layout.itemAtPosition(0, 1).widget()
         label_item.setText(path_to_file)
+
+    def update_sampling_frequency(self, frequency):
+        label_item = self.grid_layout.itemAtPosition(3, 1).widget()
+        label_item.setText(str(frequency))
+
+    def update_dataset_size(self, dataset_size):
+        label_item = self.grid_layout.itemAtPosition(11, 1).widget()
+        label_item.setText(str(dataset_size))
 
     """
     Getters

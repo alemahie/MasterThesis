@@ -51,6 +51,10 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def resampling_information(self, frequency):
+        pass
+
+    @abstractmethod
     def re_referencing_clicked(self):
         pass
 

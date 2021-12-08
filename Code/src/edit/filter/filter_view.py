@@ -22,7 +22,7 @@ __status__ = "Dev"
 class filterView(QWidget):
     def __init__(self, all_channels_names):
         super().__init__()
-        self.filterListener = None
+        self.filter_listener = None
 
         self.low_frequency_line = QLineEdit()
         self.low_frequency_line.setText("0,1")
@@ -82,7 +82,7 @@ class filterView(QWidget):
     Triggers
     """
     def cancel_filtering_trigger(self):
-        self.filterListener.cancel_button_clicked()
+        self.filter_listener.cancel_button_clicked()
 
     def confirm_filtering_trigger(self):
         low_frequency = None
@@ -99,7 +99,7 @@ class filterView(QWidget):
         elif high_frequency is None:
             print("Error high freq")
         else:
-            self.filterListener.confirm_button_clicked(low_frequency, high_frequency, channels_selected)
+            self.filter_listener.confirm_button_clicked(low_frequency, high_frequency, channels_selected)
 
     def select_all_channels_trigger(self):
         for i in range(1, self.channels_vbox_layout.count()):
@@ -115,7 +115,7 @@ class filterView(QWidget):
     Setters
     """
     def set_listener(self, listener):
-        self.filterListener = listener
+        self.filter_listener = listener
 
     """
     Getters

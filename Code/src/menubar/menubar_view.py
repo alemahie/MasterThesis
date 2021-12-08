@@ -83,7 +83,6 @@ class menubarView(QMenuBar):
         self.editMenu.addAction(filterAction)
         resamplingAction = QAction("&Resampling", self)
         resamplingAction.triggered.connect(self.resampling_trigger)
-        resamplingAction.setEnabled(False)
         self.editMenu.addAction(resamplingAction)
         reReferencingAction = QAction("&Re-Referencing", self)
         reReferencingAction.triggered.connect(self.re_referencing_trigger)

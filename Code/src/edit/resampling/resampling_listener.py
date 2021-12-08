@@ -5,6 +5,8 @@
 Main controller
 """
 
+from abc import ABC, abstractmethod
+
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
 __credits__ = ["Lemahieu Antoine"]
@@ -15,6 +17,11 @@ __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
 
-class menubarModel:
-    def __init__(self):
-        print("Toolbar model")
+class resamplingListener(ABC):
+    @abstractmethod
+    def cancel_button_clicked(self):
+        pass
+
+    @abstractmethod
+    def confirm_button_clicked(self, frequency):
+        pass

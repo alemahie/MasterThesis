@@ -20,21 +20,21 @@ __status__ = "Dev"
 
 class filterController(filterListener):
     def __init__(self, all_channels_names):
-        self.mainListener = None
-        self.filterView = filterView(all_channels_names)
-        self.filterView.set_listener(self)
+        self.main_listener = None
+        self.filter_view = filterView(all_channels_names)
+        self.filter_view.set_listener(self)
 
-        self.filterView.show()
+        self.filter_view.show()
 
     def cancel_button_clicked(self):
-        self.filterView.close()
+        self.filter_view.close()
 
     def confirm_button_clicked(self, low_frequency, high_frequency, channels_selected):
-        self.mainListener.filter_information(low_frequency, high_frequency, channels_selected)
-        self.filterView.close()
+        self.main_listener.filter_information(low_frequency, high_frequency, channels_selected)
+        self.filter_view.close()
 
     """
     Setters
     """
     def set_listener(self, listener):
-        self.mainListener = listener
+        self.main_listener = listener

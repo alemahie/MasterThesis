@@ -29,7 +29,6 @@ class mainModel:
         self.file_data = None
 
     def open_fif_file(self, path_to_file):
-        print(path_to_file[-7:-4])
         if path_to_file[-7:-4] == "raw":
             self.file_type = "Raw"
             self.file_data = read_raw_fif(path_to_file, preload=True)
@@ -69,8 +68,8 @@ class mainModel:
     def filter(self, low_frequency, high_frequency, channels_selected):
         self.file_data.filter(l_freq=low_frequency, h_freq=high_frequency, picks=channels_selected)
 
-    def resampling(self):
-        print("Resampling")
+    def resampling(self, new_frequency):
+        self.file_data.resample(new_frequency)
 
     def re_referencing(self):
         print("Re-referencing")
@@ -120,7 +119,7 @@ class mainModel:
         return "Unknown"
 
     def get_channels_locations(self):
-        return "Montage 10-05"
+        return "Unknown"
 
     def get_ICA(self):
         return False

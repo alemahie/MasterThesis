@@ -14,6 +14,7 @@ from main_view import mainView
 from main_listener import mainListener
 from menubar.menubar_controller import menubarController
 from edit.filter.filter_controller import filterController
+from edit.resampling.resampling_controller import resamplingController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -27,74 +28,86 @@ __status__ = "Dev"
 
 class mainController(mainListener):
     def __init__(self):
-        self.mainModel = mainModel()
+        self.main_model = mainModel()
 
         self.app = QApplication()
 
-        self.mainView = mainView()
+        self.main_view = mainView()
         self.screen_size = self.get_screen_geometry()
-        self.mainView.resize(0.8*self.screen_size.width(), 0.8*self.screen_size.height())
+        self.main_view.resize(0.8 * self.screen_size.width(), 0.8 * self.screen_size.height())
 
-        self.menubarController = menubarController()
-        self.menubarController.set_listener(self)
-        self.menubarView = self.menubarController.get_view()
-        self.mainView.setMenuBar(self.menubarView)
+        self.menubar_controller = menubarController()
+        self.menubar_controller.set_listener(self)
+        self.menubar_view = self.menubar_controller.get_view()
+        self.main_view.setMenuBar(self.menubar_view)
 
-        self.filterController = None
+        self.filter_controller = None
+        self.resampling_controller = None
 
-        self.mainView.show()
+        self.main_view.show()
 
         sys.exit(self.app.exec())
 
     def display_all_info(self):
-        all_info = self.mainModel.get_all_displayed_info()
-        self.mainView.display_info(all_info)
-        self.menubarController.enable_menu_when_file_loaded()
+        all_info = self.main_model.get_all_displayed_info()
+        self.main_view.display_info(all_info)
+        self.menubar_controller.enable_menu_when_file_loaded()
 
     """
     Menu Buttons Clicked
     """
     def open_fif_file_clicked(self, path_to_file):
-        self.mainModel.open_fif_file(path_to_file)
+        self.main_model.open_fif_file(path_to_file)
         self.display_all_info()
 
     def open_cnt_file_clicked(self, path_to_file):
-        self.mainModel.open_cnt_file(path_to_file)
+        self.main_model.open_cnt_file(path_to_file)
         self.display_all_info()
 
     def open_set_file_clicked(self, path_to_file):
-        self.mainModel.open_set_file(path_to_file)
+        self.main_model.open_set_file(path_to_file)
         self.display_all_info()
 
     def save_file_clicked(self):
-        if self.mainModel.is_fif_file():
-            path_to_file = self.mainModel.get_file_path_name()
+        if self.main_model.is_fif_file():
+            path_to_file = self.main_model.get_file_path_name()
         else:
-            path_to_file = self.mainView.get_path_to_file()
-        self.mainModel.save_file(path_to_file)
-        self.mainView.update_path_to_file(self.mainModel.get_file_path_name())
+            path_to_file = self.main_view.get_path_to_file()
+        self.main_model.save_file(path_to_file)
+        self.main_view.update_path_to_file(self.main_model.get_file_path_name())
 
     def save_file_as_clicked(self):
-        path_to_file = self.mainView.get_path_to_file()
-        self.mainModel.save_file_as(path_to_file)
-        self.mainView.update_path_to_file(self.mainModel.get_file_path_name())
+        path_to_file = self.main_view.get_path_to_file()
+        self.main_model.save_file_as(path_to_file)
+        self.main_view.update_path_to_file(self.main_model.get_file_path_name())
 
     def filter_clicked(self):
-        all_channels_names = self.mainModel.get_all_channels_names()
-        self.filterController = filterController(all_channels_names)
-        self.filterController.set_listener(self)
-
-    def filter_information(self, low_frequency, high_frequency, channels_selected):
-        self.mainModel.filter(low_frequency, high_frequency, channels_selected)
+        all_channels_names = self.main_model.get_all_channels_names()
+        self.filter_controller = filterController(all_channels_names)
+        self.filter_controller.set_listener(self)
 
     def resampling_clicked(self):
-        self.mainModel.resampling()
+        frequency = self.main_model.get_sampling_frequency()
+        self.resampling_controller = resamplingController(frequency)
+        self.resampling_controller.set_listener(self)
 
     def re_referencing_clicked(self):
-        self.mainModel.re_referencing()
+        self.main_model.re_referencing()
 
     def plot_data_clicked(self):
         print("Plot data")
+
+    """
+    Information retrieving
+    """
+    def filter_information(self, low_frequency, high_frequency, channels_selected):
+        self.main_model.filter(low_frequency, high_frequency, channels_selected)
+        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
+
+    def resampling_information(self, frequency):
+        self.main_model.resampling(frequency)
+        self.main_view.update_sampling_frequency(frequency)
+        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
 
     """
     Getters
