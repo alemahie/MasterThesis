@@ -1,0 +1,47 @@
+-> EEGLAB
+
+1. Filename 
+2. Nbr of channels
+3. Number of frames (seconds/milliseconds)
+4. Epochs
+5. Events
+6. Sampling rate (Hz)
+7. Epoch start (sec)
+8. Epoch end (sec)
+9. Reference 
+10. Channel locations
+11. ICA weights
+12. Dataset size (Mb)
+
+-> MNELAB
+
+1. Filename
+2. File Type ----
+3. Data Type (raw/epoched)
+4. Size on disk
+5. Size in memory
+6. Nbr of channels
+7. Samples
+8. Sampling frequency (Hz)
+9. Length (sec)
+10. Events
+11. Annotations (nbr)
+12. Reference
+13. Locations
+14. ICA
+...
+
+-> TO DO
+
+1. Filename
+2. File type (Raw ou epoched)
+2. Nbr of channels
+3. Sampling Frequency (Hz)
+4. Epochs (nbr of epochs, if raw = 1)
+5. Epochs starts (sec)
+6. Epochs end (sec)
+7. Nbr of frames (frames per epochs)
+8. Reference
+9. Channels Location
+10. ICA 
+11. Dataset size (Mb)

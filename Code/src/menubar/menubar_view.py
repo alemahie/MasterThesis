@@ -86,7 +86,6 @@ class menubarView(QMenuBar):
         self.editMenu.addAction(resamplingAction)
         reReferencingAction = QAction("&Re-Referencing", self)
         reReferencingAction.triggered.connect(self.re_referencing_trigger)
-        reReferencingAction.setEnabled(False)
         self.editMenu.addAction(reReferencingAction)
 
     def create_plot_menu(self):

@@ -1,0 +1,3 @@
+For executable :
+
+pyinstaller --distpath D:\Cours\Memoire\MasterThesis\Code\dist\ --workpath D:\Cours\Memoire\MasterThesis\Code\build\ -p D:\Cours\Memoire\MasterThesis\Code\src\ --noconfirm main.py

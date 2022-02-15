@@ -59,5 +59,9 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def re_referencing_information(self, references):
+        pass
+
+    @abstractmethod
     def plot_data_clicked(self):
         pass

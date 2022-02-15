@@ -43,6 +43,15 @@ class mainView(QMainWindow):
             label_item = self.grid_layout.itemAtPosition(i, 1).widget()
             label_item.setText(str(all_info[i]))
 
+    def plot_data(self, file_data, file_type):
+        if file_type == "Raw":
+            file_data.plot(scalings="auto", n_channels=10)
+        else:
+            file_data.plot(scalings="auto", n_epochs=5, n_channels=10)
+
+    """
+    Updates
+    """
     def update_path_to_file(self, path_to_file):
         label_item = self.grid_layout.itemAtPosition(0, 1).widget()
         label_item.setText(path_to_file)
@@ -54,6 +63,10 @@ class mainView(QMainWindow):
     def update_dataset_size(self, dataset_size):
         label_item = self.grid_layout.itemAtPosition(11, 1).widget()
         label_item.setText(str(dataset_size))
+
+    def update_reference(self, references):
+        label_item = self.grid_layout.itemAtPosition(8, 1).widget()
+        label_item.setText(str(references))
 
     """
     Getters

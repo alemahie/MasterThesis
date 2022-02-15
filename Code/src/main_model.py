@@ -27,6 +27,7 @@ class mainModel:
         self.file_path_name = None
         self.file_type = None
         self.file_data = None
+        self.channels_locations = {}
 
     def open_fif_file(self, path_to_file):
         if path_to_file[-7:-4] == "raw":
@@ -71,8 +72,8 @@ class mainModel:
     def resampling(self, new_frequency):
         self.file_data.resample(new_frequency)
 
-    def re_referencing(self):
-        print("Re-referencing")
+    def re_referencing(self, references):
+        self.file_data.set_eeg_reference(ref_channels=references)
 
     def is_fif_file(self):
         return self.file_path_name[-3:] == "fif"
@@ -80,12 +81,11 @@ class mainModel:
     """
     Getters
     """
-
     def get_all_displayed_info(self):
         all_info = [self.get_file_path_name(), self.get_file_type(), self.get_number_of_channels(),
                     self.get_sampling_frequency(), self.get_number_of_epochs(), self.get_epochs_start(),
                     self.get_epochs_end(), self.get_number_of_frames(), self.get_reference(),
-                    self.get_channels_locations(), self.get_ICA(), self.get_dataset_size()]
+                    self.get_channels_locations(), self.get_ica(), self.get_dataset_size()]
         return all_info
 
     def get_file_path_name(self):
@@ -119,10 +119,16 @@ class mainModel:
         return "Unknown"
 
     def get_channels_locations(self):
-        return "Unknown"
+        channels_info = self.file_data.info.get("chs")
+        for channel in channels_info:
+            self.channels_locations[channel["ch_name"]] = channel["loc"][:3]
+        if not self.channels_locations: # channels_locations dictionary is empty.
+            return "Unknown"
+        else:
+            return "Available"
 
-    def get_ICA(self):
-        return False
+    def get_ica(self):
+        return "No"
 
     def get_dataset_size(self):
         if self.file_path_name[-3:] == "set":
@@ -132,3 +138,6 @@ class mainModel:
 
     def get_all_channels_names(self):
         return self.file_data.ch_names
+
+    def get_file_data(self):
+        return self.file_data

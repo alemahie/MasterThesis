@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Resampling controller
 """
 
 from edit.resampling.resampling_view import resamplingView

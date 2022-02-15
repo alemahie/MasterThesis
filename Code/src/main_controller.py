@@ -15,6 +15,7 @@ from main_listener import mainListener
 from menubar.menubar_controller import menubarController
 from edit.filter.filter_controller import filterController
 from edit.resampling.resampling_controller import resamplingController
+from edit.re_referencing.re_referencing_controller import reReferencingController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -43,6 +44,7 @@ class mainController(mainListener):
 
         self.filter_controller = None
         self.resampling_controller = None
+        self.re_referencing_controller = None
 
         self.main_view.show()
 
@@ -92,10 +94,15 @@ class mainController(mainListener):
         self.resampling_controller.set_listener(self)
 
     def re_referencing_clicked(self):
-        self.main_model.re_referencing()
+        reference = self.main_model.get_reference()
+        all_channels_names = self.main_model.get_all_channels_names()
+        self.re_referencing_controller = reReferencingController(reference, all_channels_names)
+        self.re_referencing_controller.set_listener(self)
 
     def plot_data_clicked(self):
-        print("Plot data")
+        file_data = self.main_model.get_file_data()
+        file_type = self.main_model.get_file_type()
+        self.main_view.plot_data(file_data, file_type)
 
     """
     Information retrieving
@@ -108,6 +115,10 @@ class mainController(mainListener):
         self.main_model.resampling(frequency)
         self.main_view.update_sampling_frequency(frequency)
         self.main_view.update_dataset_size(self.main_model.get_dataset_size())
+
+    def re_referencing_information(self, references):
+        self.main_model.re_referencing(references)
+        self.main_view.update_reference(references)
 
     """
     Getters
