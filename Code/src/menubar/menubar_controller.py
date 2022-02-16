@@ -32,6 +32,7 @@ class menubarController(menubarListener):
     """
     Menu buttons clicked
     """
+    # File menu
     def open_fif_file_clicked(self, path_to_file):
         self.main_listener.open_fif_file_clicked(path_to_file)
 
@@ -50,6 +51,23 @@ class menubarController(menubarListener):
     def exit_program_clicked(self):
         sys.exit(0)
 
+    # Edit menu
+    def dataset_info_clicked(self):
+        self.main_listener.dataset_info_clicked()
+
+    def event_values_clicked(self):
+        self.main_listener.event_values_clicked()
+
+    def channel_location_clicked(self):
+        self.main_listener.channel_location_clicked()
+
+    def select_data_clicked(self):
+        self.main_listener.select_data_clicked()
+
+    def select_data_events_clicked(self):
+        self.main_listener.select_data_events_clicked()
+
+    # Tools menu
     def filter_clicked(self):
         self.main_listener.filter_clicked()
 
@@ -59,9 +77,35 @@ class menubarController(menubarListener):
     def re_referencing_clicked(self):
         self.main_listener.re_referencing_clicked()
 
+    def inspect_reject_data_clicked(self):
+        self.main_listener.inspect_reject_data_clicked()
+
+    def decompose_ICA_clicked(self):
+        self.main_listener.decompose_ICA_clicked()
+
+    def source_estimation_clicked(self):
+        self.main_listener.source_estimation_clicked()
+
+    # Plot menu
+    def plot_channel_locations_clicked(self):
+        self.main_listener.plot_channel_locations_clicked()
+
     def plot_data_clicked(self):
         self.main_listener.plot_data_clicked()
 
+    def plot_spectra_maps_clicked(self):
+        self.main_listener.plot_spectra_maps_clicked()
+
+    def plot_channel_properties_clicked(self):
+        self.main_listener.plot_channel_properties_clicked()
+
+    def plot_ERP_image_clicked(self):
+        self.main_listener.plot_ERP_image_clicked()
+
+    def plot_time_frequency_clicked(self):
+        self.main_listener.plot_time_frequency_clicked()
+
+    # Help menu
     def help_clicked(self):
         print("Help")
 

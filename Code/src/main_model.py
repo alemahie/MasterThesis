@@ -37,11 +37,13 @@ class mainModel:
             self.file_type = "Epochs"
             self.file_data = read_epochs(path_to_file, preload=True)
         self.file_path_name = path_to_file
+        self.create_channels_locations()
 
     def open_cnt_file(self, path_to_file):
         self.file_data = cnt_file_reader.get_raw_from_cnt(path_to_file)
         self.file_type = "Raw"
         self.file_path_name = path_to_file
+        self.create_channels_locations()
 
     def open_set_file(self, path_to_file):
         try:
@@ -52,6 +54,7 @@ class mainModel:
             self.file_type = "Epochs"
         self.file_data = mne_item
         self.file_path_name = path_to_file
+        self.create_channels_locations()
 
     def save_file(self, path_to_file):
         if self.is_fif_file():
@@ -78,14 +81,19 @@ class mainModel:
     def is_fif_file(self):
         return self.file_path_name[-3:] == "fif"
 
+    def create_channels_locations(self):
+        channels_info = self.file_data.info.get("chs")
+        for channel in channels_info:
+            self.channels_locations[channel["ch_name"]] = channel["loc"][:3]
+
     """
     Getters
     """
     def get_all_displayed_info(self):
         all_info = [self.get_file_path_name(), self.get_file_type(), self.get_number_of_channels(),
-                    self.get_sampling_frequency(), self.get_number_of_epochs(), self.get_epochs_start(),
-                    self.get_epochs_end(), self.get_number_of_frames(), self.get_reference(),
-                    self.get_channels_locations(), self.get_ica(), self.get_dataset_size()]
+                    self.get_sampling_frequency(), self.get_number_of_events(), self.get_number_of_epochs(),
+                    self.get_epochs_start(), self.get_epochs_end(), self.get_number_of_frames(),
+                    self.get_reference(), self.get_channels_locations_status(), self.get_ica(), self.get_dataset_size()]
         return all_info
 
     def get_file_path_name(self):
@@ -99,6 +107,12 @@ class mainModel:
 
     def get_sampling_frequency(self):
         return self.file_data.info.get("sfreq")
+
+    def get_number_of_events(self):
+        if self.file_type == "Raw":
+            print("Raw")
+        else:
+            print("Epochs")
 
     def get_number_of_epochs(self):
         if self.file_type == "Raw":
@@ -118,14 +132,14 @@ class mainModel:
     def get_reference(self):
         return "Unknown"
 
-    def get_channels_locations(self):
-        channels_info = self.file_data.info.get("chs")
-        for channel in channels_info:
-            self.channels_locations[channel["ch_name"]] = channel["loc"][:3]
-        if not self.channels_locations: # channels_locations dictionary is empty.
+    def get_channels_locations_status(self):
+        if not self.channels_locations:     # channels_locations dictionary is empty.
             return "Unknown"
         else:
             return "Available"
+
+    def get_channels_locations(self):
+        return self.channels_locations
 
     def get_ica(self):
         return "No"

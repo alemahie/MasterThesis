@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Channel location listener
 """
 
 from abc import ABC, abstractmethod
@@ -17,11 +17,11 @@ __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
 
-class filterListener(ABC):
+class channelLocationListener(ABC):
     @abstractmethod
     def cancel_button_clicked(self):
         pass
 
     @abstractmethod
-    def confirm_button_clicked(self, low_frequency, high_frequency, channels_selected):
+    def confirm_button_clicked(self):
         pass

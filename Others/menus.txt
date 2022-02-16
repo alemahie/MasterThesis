@@ -1,0 +1,37 @@
+File
+	Open
+	===
+	Save
+	Save as
+	===
+	Exit
+
+Edit
+	Dataset info
+	Event values
+	Channel location
+	===
+	Select data	(time)
+	Select data using events
+
+Tools
+	Resample
+	Filter
+	Re-reference
+	Interpolate Electrodes
+	===
+	Inspect/Reject data by eye
+	===
+	Decompose data with ICA
+	===
+	Source estimation
+
+Plot
+	Channel locations
+	===
+	Channel data
+	Channel spectra & maps	(PSD)
+	Channel properties
+	Channel ERP image
+	Channel ERP (with scalp)
+	Channel time-frequency	(ERSP / ITC)

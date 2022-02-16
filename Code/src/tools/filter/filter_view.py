@@ -18,11 +18,16 @@ __maintainer__ = "Lemahieu Antoine"
 __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
+from utils.channels_selector.channels_selector_controller import channelsSelectorController
+
 
 class filterView(QWidget):
     def __init__(self, all_channels_names):
         super().__init__()
         self.filter_listener = None
+        self.all_channels_names = all_channels_names
+        self.channels_selector_controller = None
+        self.channels_selected = None
 
         self.low_frequency_line = QLineEdit()
         self.low_frequency_line.setText("0,1")
@@ -31,26 +36,8 @@ class filterView(QWidget):
         self.high_frequency_line.setText("45")
         self.high_frequency_line.setValidator(QDoubleValidator())
 
-        self.channels_widget = QWidget()
-        self.channels_vbox_layout = QVBoxLayout()
-
-        self.select_unselect_widget = QWidget()
-        self.select_unselect_hbox_layout = QHBoxLayout()
-        self.select_all_channels = QPushButton("&Select All", self)
-        self.select_all_channels.clicked.connect(self.select_all_channels_trigger)
-        self.unselect_all_channels = QPushButton("&Unselect All", self)
-        self.unselect_all_channels.clicked.connect(self.unselect_all_channels_trigger)
-        self.select_unselect_hbox_layout.addWidget(self.select_all_channels)
-        self.select_unselect_hbox_layout.addWidget(self.unselect_all_channels)
-        self.select_unselect_widget.setLayout(self.select_unselect_hbox_layout)
-
-        self.channels_vbox_layout.addWidget(self.select_unselect_widget)
-        self.create_check_boxes(all_channels_names)
-        self.channels_widget.setLayout(self.channels_vbox_layout)
-
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setWidget(self.channels_widget)
+        self.channels_selection_button = QPushButton("&...", self)
+        self.channels_selection_button.clicked.connect(self.channels_selection_trigger)
 
         self.cancel = QPushButton("&Cancel", self)
         self.cancel.clicked.connect(self.cancel_filtering_trigger)
@@ -61,20 +48,13 @@ class filterView(QWidget):
         self.setLayout(self.grid_layout)
         self.create_grid_layout()
 
-    def create_check_boxes(self, all_channels_names):
-        for i, channel in enumerate(all_channels_names):
-            check_box = QCheckBox()
-            check_box.setChecked(True)
-            check_box.setText(channel)
-            self.channels_vbox_layout.addWidget(check_box)
-
     def create_grid_layout(self):
         info_labels = ["Low Frequency (Hz) : ", "High Frequency (Hz) : ", "Channels : "]
         for i, label in enumerate(info_labels):
             self.grid_layout.addWidget(QLabel(label), i, 0)
         self.grid_layout.addWidget(self.low_frequency_line, 0, 1)
         self.grid_layout.addWidget(self.high_frequency_line, 1, 1)
-        self.grid_layout.addWidget(self.scroll_area, 2, 1)
+        self.grid_layout.addWidget(self.channels_selection_button, 2, 1)
         self.grid_layout.addWidget(self.cancel, 3, 0)
         self.grid_layout.addWidget(self.confirm, 3, 1)
 
@@ -93,23 +73,18 @@ class filterView(QWidget):
         if self.high_frequency_line.hasAcceptableInput():
             high_frequency = self.high_frequency_line.text()
             high_frequency = float(high_frequency.replace(',', '.'))
-        channels_selected = self.get_all_channels_selected()
+        if self.channels_selected is None:
+            print("No channel selected for filtering")
         if low_frequency is None:
             print("Error low freq")
         elif high_frequency is None:
             print("Error high freq")
         else:
-            self.filter_listener.confirm_button_clicked(low_frequency, high_frequency, channels_selected)
+            self.filter_listener.confirm_button_clicked(low_frequency, high_frequency, self.channels_selected)
 
-    def select_all_channels_trigger(self):
-        for i in range(1, self.channels_vbox_layout.count()):
-            check_box = self.channels_vbox_layout.itemAt(i).widget()
-            check_box.setChecked(True)
-
-    def unselect_all_channels_trigger(self):
-        for i in range(1, self.channels_vbox_layout.count()):
-            check_box = self.channels_vbox_layout.itemAt(i).widget()
-            check_box.setChecked(False)
+    def channels_selection_trigger(self):
+        self.channels_selector_controller = channelsSelectorController(self.all_channels_names, box_checked=False)
+        self.channels_selector_controller.set_listener(self.filter_listener)
 
     """
     Setters
@@ -117,13 +92,5 @@ class filterView(QWidget):
     def set_listener(self, listener):
         self.filter_listener = listener
 
-    """
-    Getters
-    """
-    def get_all_channels_selected(self):
-        all_channels = []
-        for i in range(1, self.channels_vbox_layout.count()):
-            check_box = self.channels_vbox_layout.itemAt(i).widget()
-            if check_box.isChecked():
-                all_channels.append(check_box.text())
-        return all_channels
+    def set_channels_selected(self, channels_selected):
+        self.channels_selected = channels_selected

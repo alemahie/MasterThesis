@@ -5,8 +5,8 @@
 Resampling controller
 """
 
-from edit.resampling.resampling_view import resamplingView
-from edit.resampling.resampling_listener import resamplingListener
+from tools.resampling.resampling_view import resamplingView
+from tools.resampling.resampling_listener import resamplingListener
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

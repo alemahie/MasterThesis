@@ -51,9 +51,9 @@ class channelsSelectorView(QWidget):
         self.cancel_confirm_widget = QWidget()
         self.cancel_confirm_layout = QHBoxLayout()
         self.cancel = QPushButton("&Cancel", self)
-        self.cancel.clicked.connect(self.cancel_re_referencing_trigger)
+        self.cancel.clicked.connect(self.cancel_trigger)
         self.confirm = QPushButton("&Confirm", self)
-        self.confirm.clicked.connect(self.confirm_re_referencing_trigger)
+        self.confirm.clicked.connect(self.confirm_trigger)
         self.cancel_confirm_layout.addWidget(self.cancel)
         self.cancel_confirm_layout.addWidget(self.confirm)
         self.cancel_confirm_widget.setLayout(self.cancel_confirm_layout)
@@ -72,10 +72,10 @@ class channelsSelectorView(QWidget):
     """
     Triggers
     """
-    def cancel_re_referencing_trigger(self):
+    def cancel_trigger(self):
         self.channels_selector_listener.cancel_button_clicked()
 
-    def confirm_re_referencing_trigger(self):
+    def confirm_trigger(self):
         channels_selected = self.get_all_channels_selected()
         self.channels_selector_listener.confirm_button_clicked(channels_selected)
 

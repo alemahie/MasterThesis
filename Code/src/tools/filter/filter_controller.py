@@ -5,8 +5,8 @@
 Main controller
 """
 
-from edit.filter.filter_view import filterView
-from edit.filter.filter_listener import filterListener
+from tools.filter.filter_view import filterView
+from tools.filter.filter_listener import filterListener
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -32,6 +32,9 @@ class filterController(filterListener):
     def confirm_button_clicked(self, low_frequency, high_frequency, channels_selected):
         self.main_listener.filter_information(low_frequency, high_frequency, channels_selected)
         self.filter_view.close()
+
+    def get_channels_selected(self, channels_selected):
+        self.filter_view.set_channels_selected(channels_selected)
 
     """
     Setters

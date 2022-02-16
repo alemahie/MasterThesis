@@ -5,8 +5,8 @@
 Re-referencing controller
 """
 
-from edit.re_referencing.re_referencing_view import reReferencingView
-from edit.re_referencing.re_referencing_listener import reReferencingListener
+from tools.re_referencing.re_referencing_view import reReferencingView
+from tools.re_referencing.re_referencing_listener import reReferencingListener
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

@@ -13,9 +13,13 @@ from main_model import mainModel
 from main_view import mainView
 from main_listener import mainListener
 from menubar.menubar_controller import menubarController
-from edit.filter.filter_controller import filterController
-from edit.resampling.resampling_controller import resamplingController
-from edit.re_referencing.re_referencing_controller import reReferencingController
+
+from edit.dataset_info.dataset_info_controller import datasetInfoController
+from edit.channel_location.channel_location_controller import channelLocationController
+
+from tools.filter.filter_controller import filterController
+from tools.resampling.resampling_controller import resamplingController
+from tools.re_referencing.re_referencing_controller import reReferencingController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -42,6 +46,9 @@ class mainController(mainListener):
         self.menubar_view = self.menubar_controller.get_view()
         self.main_view.setMenuBar(self.menubar_view)
 
+        self.dataset_info_controller = None
+        self.channel_location_controller = None
+
         self.filter_controller = None
         self.resampling_controller = None
         self.re_referencing_controller = None
@@ -56,7 +63,7 @@ class mainController(mainListener):
         self.menubar_controller.enable_menu_when_file_loaded()
 
     """
-    Menu Buttons Clicked
+    File menu
     """
     def open_fif_file_clicked(self, path_to_file):
         self.main_model.open_fif_file(path_to_file)
@@ -83,15 +90,49 @@ class mainController(mainListener):
         self.main_model.save_file_as(path_to_file)
         self.main_view.update_path_to_file(self.main_model.get_file_path_name())
 
+    """
+    Edit menu
+    """
+    def dataset_info_clicked(self):
+        self.dataset_info_controller = datasetInfoController()
+        self.dataset_info_controller.set_listener(self)
+
+    def event_values_clicked(self):
+        pass
+
+    def channel_location_clicked(self):
+        channel_location = self.main_model.get_channels_locations()
+        channel_names = self.main_model.get_all_channels_names()
+        self.channel_location_controller = channelLocationController(channel_location, channel_names)
+        self.channel_location_controller.set_listener(self)
+
+    def select_data_clicked(self):
+        pass
+
+    def select_data_events_clicked(self):
+        pass
+
+    """
+    Tools menu
+    """
     def filter_clicked(self):
         all_channels_names = self.main_model.get_all_channels_names()
         self.filter_controller = filterController(all_channels_names)
         self.filter_controller.set_listener(self)
 
+    def filter_information(self, low_frequency, high_frequency, channels_selected):
+        self.main_model.filter(low_frequency, high_frequency, channels_selected)
+        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
+
     def resampling_clicked(self):
         frequency = self.main_model.get_sampling_frequency()
         self.resampling_controller = resamplingController(frequency)
         self.resampling_controller.set_listener(self)
+
+    def resampling_information(self, frequency):
+        self.main_model.resampling(frequency)
+        self.main_view.update_sampling_frequency(frequency)
+        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
 
     def re_referencing_clicked(self):
         reference = self.main_model.get_reference()
@@ -99,26 +140,41 @@ class mainController(mainListener):
         self.re_referencing_controller = reReferencingController(reference, all_channels_names)
         self.re_referencing_controller.set_listener(self)
 
+    def re_referencing_information(self, references):
+        self.main_model.re_referencing(references)
+        self.main_view.update_reference(references)
+
+    def inspect_reject_data_clicked(self):
+        pass
+
+    def decompose_ICA_clicked(self):
+        pass
+
+    def source_estimation_clicked(self):
+        pass
+
+    """
+    Plot menu
+    """
+    def plot_channel_locations_clicked(self):
+        pass
+
     def plot_data_clicked(self):
         file_data = self.main_model.get_file_data()
         file_type = self.main_model.get_file_type()
         self.main_view.plot_data(file_data, file_type)
 
-    """
-    Information retrieving
-    """
-    def filter_information(self, low_frequency, high_frequency, channels_selected):
-        self.main_model.filter(low_frequency, high_frequency, channels_selected)
-        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
+    def plot_spectra_maps_clicked(self):
+        pass
 
-    def resampling_information(self, frequency):
-        self.main_model.resampling(frequency)
-        self.main_view.update_sampling_frequency(frequency)
-        self.main_view.update_dataset_size(self.main_model.get_dataset_size())
+    def plot_channel_properties_clicked(self):
+        pass
 
-    def re_referencing_information(self, references):
-        self.main_model.re_referencing(references)
-        self.main_view.update_reference(references)
+    def plot_ERP_image_clicked(self):
+        pass
+
+    def plot_time_frequency_clicked(self):
+        pass
 
     """
     Getters

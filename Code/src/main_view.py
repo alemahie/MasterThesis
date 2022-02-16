@@ -22,7 +22,7 @@ class mainView(QMainWindow):
         super().__init__()
 
         self.info_labels = ["Filename : ", "File Type : ", "Number of Channels : ", "Sampling Frequency (Hz) : ",
-                            "Number of Epochs : ", "Epoch start (sec) : ", "Epoch end (sec) : ",
+                            "Number of Events : ", "Number of Epochs : ", "Epoch start (sec) : ", "Epoch end (sec) : ",
                             "Number of Frames/Frames per Epoch : ", "Reference : ", "Channel Locations : ",
                             "ICA : ", "Dataset Size (Mb) : "]
 
@@ -33,13 +33,13 @@ class mainView(QMainWindow):
 
         for i, info in enumerate(self.info_labels):
             self.grid_layout.addWidget(QLabel(info), i, 0)
-        for i in range(12):
+        for i in range(13):
             self.grid_layout.addWidget(QLabel("/"), i, 1)
 
         self.setCentralWidget(self.central_widget)
 
     def display_info(self, all_info):
-        for i in range(12):
+        for i in range(13):
             label_item = self.grid_layout.itemAtPosition(i, 1).widget()
             label_item.setText(str(all_info[i]))
 
@@ -61,11 +61,11 @@ class mainView(QMainWindow):
         label_item.setText(str(frequency))
 
     def update_dataset_size(self, dataset_size):
-        label_item = self.grid_layout.itemAtPosition(11, 1).widget()
+        label_item = self.grid_layout.itemAtPosition(12, 1).widget()
         label_item.setText(str(dataset_size))
 
     def update_reference(self, references):
-        label_item = self.grid_layout.itemAtPosition(8, 1).widget()
+        label_item = self.grid_layout.itemAtPosition(9, 1).widget()
         label_item.setText(str(references))
 
     """

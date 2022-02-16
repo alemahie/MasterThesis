@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Main listener
 """
 
 from abc import ABC, abstractmethod
@@ -18,6 +18,7 @@ __status__ = "Dev"
 
 
 class mainListener(ABC):
+    # File menu
     @abstractmethod
     def open_fif_file_clicked(self, path_to_file):
         pass
@@ -38,6 +39,28 @@ class mainListener(ABC):
     def save_file_as_clicked(self):
         pass
 
+    # Edit menu
+    @abstractmethod
+    def dataset_info_clicked(self):
+        pass
+
+    @abstractmethod
+    def event_values_clicked(self):
+        pass
+
+    @abstractmethod
+    def channel_location_clicked(self):
+        pass
+
+    @abstractmethod
+    def select_data_clicked(self):
+        pass
+
+    @abstractmethod
+    def select_data_events_clicked(self):
+        pass
+
+    # Tools menu
     @abstractmethod
     def filter_clicked(self):
         pass
@@ -63,5 +86,38 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def inspect_reject_data_clicked(self):
+        pass
+
+    @abstractmethod
+    def decompose_ICA_clicked(self):
+        pass
+
+    @abstractmethod
+    def source_estimation_clicked(self):
+        pass
+
+    # Plot menu
+    @abstractmethod
+    def plot_channel_locations_clicked(self):
+        pass
+
+    @abstractmethod
     def plot_data_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_spectra_maps_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_channel_properties_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_ERP_image_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_time_frequency_clicked(self):
         pass
