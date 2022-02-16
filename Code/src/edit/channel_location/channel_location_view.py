@@ -6,6 +6,7 @@ Channel location view
 """
 
 from PySide6.QtWidgets import QWidget, QGridLayout, QPushButton, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout
+from PySide6.QtGui import QDoubleValidator, QIntValidator
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -18,21 +19,22 @@ __status__ = "Dev"
 
 
 class channelLocationView(QWidget):
-    def __init__(self, channel_location, channel_names):
+    def __init__(self, number_of_channels):
         super().__init__()
         self.channel_location_listener = None
 
         self.vertical_layout = QVBoxLayout()
         self.setLayout(self.vertical_layout)
 
+
         self.channel_name_line = QLineEdit()
-        self.channel_name_line.setText(channel_names[0])
+        self.only_double = QDoubleValidator()
         self.x_coordinate_line = QLineEdit()
-        self.x_coordinate_line.setText(str(round(channel_location[channel_names[0]][1], 3)))
+        self.x_coordinate_line.setValidator(self.only_double)
         self.y_coordinate_line = QLineEdit()
-        self.y_coordinate_line.setText(str(round(channel_location[channel_names[0]][0], 3)))
+        self.y_coordinate_line.setValidator(self.only_double)
         self.z_coordinate_line = QLineEdit()
-        self.z_coordinate_line.setText(str(round(channel_location[channel_names[0]][2], 3)))
+        self.z_coordinate_line.setValidator(self.only_double)
 
         self.info_widget = QWidget()
         self.info_grid_layout = QGridLayout()
@@ -46,6 +48,11 @@ class channelLocationView(QWidget):
         self.info_grid_layout.addWidget(self.y_coordinate_line, 3, 1)
         self.info_grid_layout.addWidget(self.z_coordinate_line, 4, 1)
         self.info_widget.setLayout(self.info_grid_layout)
+        
+        self.channel_changement_info_widget = QWidget()
+        self.channel_changement_info_layout = QHBoxLayout()
+        self.channel_changement_info_layout.addWidget(QLabel(f"Channel number : (out of {number_of_channels} channels)"))
+        self.channel_changement_info_widget.setLayout(self.channel_changement_info_layout)
 
         self.change_channel_widget = QWidget()
         self.change_channel_layout = QHBoxLayout()
@@ -53,8 +60,9 @@ class channelLocationView(QWidget):
         self.previous_button.clicked.connect(self.previous_button_trigger)
         self.next_button = QPushButton("&Next", self)
         self.next_button.clicked.connect(self.next_button_trigger)
+        self.only_int = QIntValidator(1, number_of_channels, self)
         self.channel_number = QLineEdit()
-        self.channel_number.setText(str(1))
+        self.channel_number.setValidator(self.only_int)
         self.change_channel_layout.addWidget(self.previous_button)
         self.change_channel_layout.addWidget(self.channel_number)
         self.change_channel_layout.addWidget(self.next_button)
@@ -71,6 +79,7 @@ class channelLocationView(QWidget):
         self.cancel_confirm_widget.setLayout(self.cancel_confirm_layout)
 
         self.vertical_layout.addWidget(self.info_widget)
+        self.vertical_layout.addWidget(self.channel_changement_info_widget)
         self.vertical_layout.addWidget(self.change_channel_widget)
         self.vertical_layout.addWidget(self.cancel_confirm_widget)
 
@@ -84,10 +93,20 @@ class channelLocationView(QWidget):
         self.channel_location_listener.confirm_button_clicked()
 
     def previous_button_trigger(self):
-        print("previous")
+        self.channel_location_listener.previous_button_clicked()
 
     def next_button_trigger(self):
-        print("next")
+        self.channel_location_listener.next_button_clicked()
+
+    """
+    Updates
+    """
+    def update_channel_displayed(self, channel_number, channel_name, x_coordinate, y_coordinate, z_coordinate):
+        self.channel_name_line.setText(channel_name)
+        self.x_coordinate_line.setText(str(round(x_coordinate, 3)))
+        self.y_coordinate_line.setText(str(round(y_coordinate, 3)))
+        self.z_coordinate_line.setText(str(round(z_coordinate, 3)))
+        self.channel_number.setText(str(channel_number+1))
 
     """
     Setters

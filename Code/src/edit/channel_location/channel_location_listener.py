@@ -25,3 +25,11 @@ class channelLocationListener(ABC):
     @abstractmethod
     def confirm_button_clicked(self):
         pass
+
+    @abstractmethod
+    def previous_button_clicked(self):
+        pass
+
+    @abstractmethod
+    def next_button_clicked(self):
+        pass
