@@ -94,7 +94,10 @@ class mainController(mainListener):
     Edit menu
     """
     def dataset_info_clicked(self):
-        self.dataset_info_controller = datasetInfoController()
+        sampling_rate = self.main_model.get_sampling_frequency()
+        time_points_epochs = self.main_model.get_number_of_frames()
+        start_time = self.main_model.get_epochs_start()
+        self.dataset_info_controller = datasetInfoController(sampling_rate, time_points_epochs, start_time)
         self.dataset_info_controller.set_listener(self)
 
     def event_values_clicked(self):
@@ -157,7 +160,8 @@ class mainController(mainListener):
     Plot menu
     """
     def plot_channel_locations_clicked(self):
-        pass
+        file_data = self.main_model.get_file_data()
+        self.main_view.plot_channel_locations(file_data)
 
     def plot_data_clicked(self):
         file_data = self.main_model.get_file_data()

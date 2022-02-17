@@ -19,9 +19,9 @@ __status__ = "Dev"
 
 
 class datasetInfoController(datasetInfoListener):
-    def __init__(self):
+    def __init__(self, sampling_rate, time_points_epochs, start_time):
         self.main_listener = None
-        self.dataset_info_view = datasetInfoView()
+        self.dataset_info_view = datasetInfoView(sampling_rate, time_points_epochs, start_time)
         self.dataset_info_view.set_listener(self)
 
         self.dataset_info_view.show()

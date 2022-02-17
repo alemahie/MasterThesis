@@ -50,7 +50,14 @@ class channelLocationController(channelLocationListener):
         else:
             self.current_channel_number += 1
         self.update_channel_displayed()
-        
+
+    def editing_finished_clicked(self, channel_number):
+        self.current_channel_number = channel_number
+        self.update_channel_displayed()
+
+    """
+    Updates
+    """
     def update_channel_displayed(self):
         channel_name, channel_location = self.get_channel_info_from_number(self.current_channel_number)
         x_coordinate = channel_location[1]

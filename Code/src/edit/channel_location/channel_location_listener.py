@@ -33,3 +33,7 @@ class channelLocationListener(ABC):
     @abstractmethod
     def next_button_clicked(self):
         pass
+
+    @abstractmethod
+    def editing_finished_clicked(self, channel_number):
+        pass

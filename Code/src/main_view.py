@@ -37,11 +37,18 @@ class mainView(QMainWindow):
             self.grid_layout.addWidget(QLabel("/"), i, 1)
 
         self.setCentralWidget(self.central_widget)
+        self.setWindowTitle("MNE Vision")
 
     def display_info(self, all_info):
         for i in range(13):
             label_item = self.grid_layout.itemAtPosition(i, 1).widget()
             label_item.setText(str(all_info[i]))
+
+    """
+    Plot
+    """
+    def plot_channel_locations(self, file_data):
+        file_data.plot_sensors(show_names=True)
 
     def plot_data(self, file_data, file_type):
         if file_type == "Raw":
