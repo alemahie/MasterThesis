@@ -103,10 +103,6 @@ class menubarListener(ABC):
         pass
 
     @abstractmethod
-    def plot_channel_properties_clicked(self):
-        pass
-
-    @abstractmethod
     def plot_ERP_image_clicked(self):
         pass
 

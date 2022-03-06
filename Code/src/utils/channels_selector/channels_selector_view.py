@@ -5,7 +5,7 @@
 Channels selector View
 """
 
-from PySide6.QtWidgets import QWidget, QPushButton, QLabel, QCheckBox, QHBoxLayout, QScrollArea, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QCheckBox
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

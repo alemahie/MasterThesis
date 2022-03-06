@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main model
+CNT file reader
 """
 
 from mne import create_info

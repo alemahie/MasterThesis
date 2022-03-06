@@ -5,8 +5,8 @@
 Dataset info view
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QPushButton, QLabel, QLineEdit
-from PySide6.QtGui import QIntValidator
+from PyQt6.QtWidgets import QWidget, QGridLayout, QLineEdit, QPushButton, QLabel
+from PyQt6.QtGui import QIntValidator
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

@@ -5,7 +5,9 @@
 Power spectral density view
 """
 
-from PySide6.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel
+from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QLabel
+
+from utils.channels_selector.channels_selector_controller import channelsSelectorController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -15,8 +17,6 @@ __version__ = "0.1"
 __maintainer__ = "Lemahieu Antoine"
 __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
-
-from utils.channels_selector.channels_selector_controller import channelsSelectorController
 
 
 class erpView(QWidget):

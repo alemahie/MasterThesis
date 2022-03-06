@@ -5,11 +5,7 @@
 Progress bar
 """
 
-from random import randint
-from time import sleep
-
-from PyQt6.QtCore import QTimer, QThread, pyqtSignal
-from PySide6.QtWidgets import QProgressBar
+from PyQt6.QtWidgets import QProgressBar
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

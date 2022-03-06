@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Filter listener
+Time frequency (ERSP/ITC) listener
 """
 
 from abc import ABC, abstractmethod
@@ -17,15 +17,11 @@ __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
 
-class filterListener(ABC):
+class timeFrequencyErspItcListener(ABC):
     @abstractmethod
     def cancel_button_clicked(self):
         pass
 
     @abstractmethod
-    def confirm_button_clicked(self, low_frequency, high_frequency, channels_selected):
-        pass
-
-    @abstractmethod
-    def get_channels_selected(self, channels_selected):
+    def confirm_button_clicked(self):
         pass

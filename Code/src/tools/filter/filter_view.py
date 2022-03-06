@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Filter view
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QLineEdit, QLabel, QPushButton
-from PySide6.QtGui import QDoubleValidator
+from PyQt6.QtGui import QDoubleValidator
+from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QGridLayout, QLabel
 
 from utils.channels_selector.channels_selector_controller import channelsSelectorController
 

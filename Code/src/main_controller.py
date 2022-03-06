@@ -7,7 +7,7 @@ Main controller
 
 import sys
 
-from PySide6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 
 from main_model import mainModel
 from main_view import mainView
@@ -26,6 +26,7 @@ from tools.source_estimation.source_estimation_controller import sourceEstimatio
 
 from plots.power_spectral_density.power_spectral_density_controller import powerSpectralDensityController
 from plots.erp.erp_controller import erpController
+from plots.time_frequency_ersp_itc.time_frequency_ersp_itc_controller import timeFrequencyErspItcController
 
 from utils.stylesheet import get_stylesheet
 from utils.waiting_while_processing.waiting_while_processing_controller import waitingWhileProcessingController
@@ -45,7 +46,7 @@ class mainController(mainListener):
         self.main_model = mainModel()
         self.main_model.set_listener(self)
 
-        self.app = QApplication()
+        self.app = QApplication(sys.argv)
         self.app.setStyleSheet(get_stylesheet())
 
         self.main_view = mainView()
@@ -68,6 +69,7 @@ class mainController(mainListener):
 
         self.power_spectral_density_controller = None
         self.erp_controller = None
+        self.time_frequency_ersp_itc_controller = None
 
         self.waiting_while_processing_controller = None
 
@@ -235,9 +237,6 @@ class mainController(mainListener):
         self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
         self.power_spectral_density_controller.plot_psd(psds, freqs)
 
-    def plot_channel_properties_clicked(self):
-        pass
-
     def plot_ERP_image_clicked(self):
         all_channels_names = self.main_model.get_all_channels_names()
         self.erp_controller = erpController(all_channels_names)
@@ -248,7 +247,8 @@ class mainController(mainListener):
         self.main_view.plot_erps(file_data, channels_selected)
 
     def plot_time_frequency_clicked(self):
-        pass
+        self.time_frequency_ersp_itc_controller = timeFrequencyErspItcController()
+        self.time_frequency_ersp_itc_controller.set_listener(self)
 
     """
     Getters

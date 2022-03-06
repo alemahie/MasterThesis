@@ -96,9 +96,6 @@ class menubarController(menubarListener):
     def plot_spectra_maps_clicked(self):
         self.main_listener.plot_spectra_maps_clicked()
 
-    def plot_channel_properties_clicked(self):
-        self.main_listener.plot_channel_properties_clicked()
-
     def plot_ERP_image_clicked(self):
         self.main_listener.plot_ERP_image_clicked()
 

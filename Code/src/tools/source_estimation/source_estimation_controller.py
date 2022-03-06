@@ -34,7 +34,7 @@ class sourceEstimationController(sourceEstimationListener):
         self.main_listener.source_estimation_information(source_estimation_method, save_data, load_data, n_jobs)
 
     def plot_source_estimation(self, source_estimation_data):
-        print("plot source estimation")
+        self.source_estimation_view.plot_source_estimation(source_estimation_data)
 
     """
     Setters

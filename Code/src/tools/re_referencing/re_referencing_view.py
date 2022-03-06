@@ -5,8 +5,8 @@
 Re-referencing View
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QPushButton, QLabel, QCheckBox, QButtonGroup, QHBoxLayout, \
-    QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QButtonGroup, QCheckBox, QPushButton, QGridLayout, QHBoxLayout, QLabel
+
 from utils.channels_selector.channels_selector_controller import channelsSelectorController
 
 __author__ = "Lemahieu Antoine"

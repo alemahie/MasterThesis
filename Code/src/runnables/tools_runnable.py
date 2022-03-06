@@ -57,6 +57,8 @@ class sourceEstimationRunnable(QRunnable):
         self.read_files = read_files
         self.write_files = write_files
         self.n_jobs = n_jobs
+        self.subject = "fsaverage"
+        self.subjects_dir = "../../data/freesurfer/subjects/"
 
         self.source_estimation_data = None
 
@@ -75,13 +77,7 @@ class sourceEstimationRunnable(QRunnable):
         return stc
 
     def compute_inverse(self, inv):
-        """
-        subject = "fsaverage"
-        subjects_dir = "/home/antoine/freesurfer/subjects/"
-
-        fwd = read_forward_solution(self.file_path + "-fwd.fif", verbose=False)
-        noise_cov = read_cov(self.file_path + "-cov.fif", verbose=False)
-        """
+        print("Apply inverse")
         evoked = self.file_data.average()
         snr = 3.0
         lambda2 = 1.0 / snr ** 2
@@ -90,10 +86,9 @@ class sourceEstimationRunnable(QRunnable):
 
     def create_inverse_operator(self):
         print("Compute all data necessary for creating inverse\n===============================================")
-        subjects_dir = "/home/antoine/freesurfer/subjects/"
         noise_cov = self.compute_noise_covariance()
-        src = self.compute_source_space(subjects_dir)
-        bem = self.compute_bem_solution(subjects_dir)
+        src = self.compute_source_space()
+        bem = self.compute_bem_solution()
         fwd = self.compute_forward_solution(src, bem)
         inv = self.compute_inverse_operator(fwd, noise_cov)
         return inv
@@ -105,18 +100,18 @@ class sourceEstimationRunnable(QRunnable):
             noise_cov.save(self.file_path + "-cov.fif")
         return noise_cov
 
-    def compute_source_space(self, subjects_dir):
+    def compute_source_space(self):
         print("Compute source space")
-        src = setup_source_space(subject="fsaverage", spacing='oct6', add_dist='patch', subjects_dir=subjects_dir,
+        src = setup_source_space(subject=self.subject, spacing='oct6', add_dist='patch', subjects_dir=self.subjects_dir,
                                  n_jobs=self.n_jobs, verbose=False)
         if self.write_files:
             write_source_spaces(self.file_path + "-src.fif", src, overwrite=True, verbose=False)
         return src
 
-    def compute_bem_solution(self, subjects_dir):
+    def compute_bem_solution(self):
         print("Compute bem solution")
         conductivity = (0.3, 0.006, 0.3)  # for three layers
-        model = make_bem_model(subject="fsaverage", ico=4, conductivity=conductivity, subjects_dir=subjects_dir,
+        model = make_bem_model(subject=self.subject, ico=4, conductivity=conductivity, subjects_dir=self.subjects_dir,
                                verbose=False)
         bem = make_bem_solution(model, verbose=False)
         if self.write_files:

@@ -5,8 +5,8 @@
 Main controller
 """
 
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenuBar, QMenu, QFileDialog
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QMenuBar, QMenu, QFileDialog
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -139,16 +139,11 @@ class menubarView(QMenuBar):
         plot_channel_spectra_maps_action = QAction("&Channel spectra (PSD)", self)
         plot_channel_spectra_maps_action.triggered.connect(self.plot_spectra_maps_trigger)
         self.plot_menu.addAction(plot_channel_spectra_maps_action)
-        plot_channel_properties_action = QAction("&Channel properties", self)
-        plot_channel_properties_action.triggered.connect(self.plot_channel_properties_trigger)
-        plot_channel_properties_action.setEnabled(False)
-        self.plot_menu.addAction(plot_channel_properties_action)
         plot_ERP_image_action = QAction("&Channel ERP image", self)
         plot_ERP_image_action.triggered.connect(self.plot_ERP_image_trigger)
         self.plot_menu.addAction(plot_ERP_image_action)
         plot_time_frequency_action = QAction("&Channel time-frequency (ERSP/ITC)", self)
         plot_time_frequency_action.triggered.connect(self.plot_time_frequency_trigger)
-        plot_time_frequency_action.setEnabled(False)
         self.plot_menu.addAction(plot_time_frequency_action)
 
     def create_help_menu(self):

@@ -5,8 +5,8 @@
 Channel location view
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QPushButton, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout
-from PySide6.QtGui import QDoubleValidator, QIntValidator
+from PyQt6.QtGui import QDoubleValidator, QIntValidator
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QGridLayout, QLabel, QHBoxLayout, QPushButton
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

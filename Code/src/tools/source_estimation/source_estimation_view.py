@@ -25,6 +25,8 @@ class sourceEstimationView(QWidget):
     def __init__(self):
         super().__init__()
         self.source_estimation_listener = None
+        self.subject = "fsaverage"
+        self.subjects_dir = "../../data/freesurfer/subjects/"
 
         self.global_layout = QVBoxLayout()
         self.setLayout(self.global_layout)
@@ -83,6 +85,9 @@ class sourceEstimationView(QWidget):
         self.global_layout.addWidget(self.save_load_widget)
         self.global_layout.addWidget(self.n_jobs_widget)
         self.global_layout.addWidget(self.cancel_confirm_widget)
+
+    def plot_source_estimation(self, source_estimation_data):
+        source_estimation_data.plot(subject=self.subject, subjects_dir=self.subjects_dir, backend="matplotlib")
 
     """
     Triggers

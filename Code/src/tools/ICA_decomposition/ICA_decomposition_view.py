@@ -5,7 +5,7 @@
 ICA decomposition view
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QPushButton, QComboBox, QLabel
+from PyQt6.QtWidgets import QWidget, QGridLayout, QComboBox, QPushButton, QLabel
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"

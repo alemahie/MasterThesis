@@ -5,7 +5,9 @@
 Main view
 """
 
-from PySide6.QtWidgets import QMainWindow, QGridLayout, QLabel, QWidget, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFileDialog
+
+from mne.viz import plot_sensors
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -48,7 +50,8 @@ class mainView(QMainWindow):
     Plot
     """
     def plot_channel_locations(self, file_data):
-        file_data.plot_sensors(show_names=True)
+        plot_sensors(file_data.info)
+        # file_data.plot_sensors(show_names=True)
 
     def plot_data(self, file_data, file_type):
         if file_type == "Raw":

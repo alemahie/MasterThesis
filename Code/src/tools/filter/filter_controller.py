@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Filter controller
 """
 
 from tools.filter.filter_view import filterView

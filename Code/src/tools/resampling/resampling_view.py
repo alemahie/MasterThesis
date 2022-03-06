@@ -5,7 +5,7 @@
 Resampling view
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QSpinBox, QPushButton, QLabel
+from PyQt6.QtWidgets import QWidget, QGridLayout, QSpinBox, QPushButton, QLabel
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
