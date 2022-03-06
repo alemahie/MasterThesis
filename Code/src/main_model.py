@@ -5,12 +5,15 @@
 Main model
 """
 
-from os.path import getsize
+from os.path import getsize, splitext
 
+from PyQt6.QtCore import QThreadPool
 from mne import read_epochs
-from mne.io import read_raw_fif, read_raw_eeglab, read_epochs_eeglab
+from mne.io import read_raw_fif
 
-from utils import cnt_file_reader
+from runnables.tools_runnable import icaRunnable, sourceEstimationRunnable
+from runnables.files_runnable import openCntFileRunnable, openSetFileRunnable
+from runnables.plots_runnable import powerSpectralDensityRunnable
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -24,11 +27,35 @@ __status__ = "Dev"
 
 class mainModel:
     def __init__(self):
+        self.main_listener = None
+
         self.file_path_name = None
         self.file_type = None
         self.file_data = None
         self.channels_locations = {}
+        self.ica_decomposition = "No"
+        self.references = "Unknown"
 
+        self.open_cnt_file_runnable = None
+        self.open_set_file_runnable = None
+        self.ica_data_decomposition_runnable = None
+        self.source_estimation_runnable = None
+        self.power_spectral_density_runnable = None
+
+    """
+    Useful methods
+    """
+    def is_fif_file(self):
+        return self.file_path_name[-3:] == "fif"
+
+    def create_channels_locations(self):
+        channels_info = self.file_data.info.get("chs")
+        for channel in channels_info:
+            self.channels_locations[channel["ch_name"]] = channel["loc"][:3]
+
+    """
+    File menu
+    """
     def open_fif_file(self, path_to_file):
         if path_to_file[-7:-4] == "raw":
             self.file_type = "Raw"
@@ -40,21 +67,32 @@ class mainModel:
         self.create_channels_locations()
 
     def open_cnt_file(self, path_to_file):
-        self.file_data = cnt_file_reader.get_raw_from_cnt(path_to_file)
+        pool = QThreadPool.globalInstance()
+        self.open_cnt_file_runnable = openCntFileRunnable(path_to_file)
+        pool.start(self.open_cnt_file_runnable)
+        self.open_cnt_file_runnable.signals.finished.connect(self.open_cnt_file_finished)
+
         self.file_type = "Raw"
         self.file_path_name = path_to_file
+
+    def open_cnt_file_finished(self):
+        self.file_data = self.open_cnt_file_runnable.get_file_data()
         self.create_channels_locations()
+        self.main_listener.open_cnt_file_finished()
 
     def open_set_file(self, path_to_file):
-        try:
-            mne_item = read_raw_eeglab(path_to_file, preload=True)
-            self.file_type = "Raw"
-        except:
-            mne_item = read_epochs_eeglab(path_to_file)
-            self.file_type = "Epochs"
-        self.file_data = mne_item
+        pool = QThreadPool.globalInstance()
+        self.open_set_file_runnable = openSetFileRunnable(path_to_file)
+        pool.start(self.open_set_file_runnable)
+        self.open_set_file_runnable.signals.finished.connect(self.open_set_file_finished)
+
         self.file_path_name = path_to_file
+
+    def open_set_file_finished(self):
+        self.file_data = self.open_set_file_runnable.get_file_data()
+        self.file_type = self.open_set_file_runnable.get_file_type()
         self.create_channels_locations()
+        self.main_listener.open_set_file_finished()
 
     def save_file(self, path_to_file):
         if self.is_fif_file():
@@ -69,6 +107,9 @@ class mainModel:
             self.file_path_name = path_to_file + "-epo.fif"
         self.file_data.save(self.file_path_name)
 
+    """
+    Tools menu
+    """
     def filter(self, low_frequency, high_frequency, channels_selected):
         self.file_data.filter(l_freq=low_frequency, h_freq=high_frequency, picks=channels_selected)
 
@@ -77,14 +118,44 @@ class mainModel:
 
     def re_referencing(self, references):
         self.file_data.set_eeg_reference(ref_channels=references)
+        self.references = references
 
-    def is_fif_file(self):
-        return self.file_path_name[-3:] == "fif"
+    def ica_data_decomposition(self, ica_method):
+        pool = QThreadPool.globalInstance()
+        self.ica_data_decomposition_runnable = icaRunnable(ica_method, self.file_data)
+        pool.start(self.ica_data_decomposition_runnable)
+        self.ica_data_decomposition_runnable.signals.finished.connect(self.ica_data_decomposition_finished)
 
-    def create_channels_locations(self):
-        channels_info = self.file_data.info.get("chs")
-        for channel in channels_info:
-            self.channels_locations[channel["ch_name"]] = channel["loc"][:3]
+    def ica_data_decomposition_finished(self):
+        self.file_data = self.ica_data_decomposition_runnable.get_file_data()
+        self.ica_decomposition = "Yes"
+        self.main_listener.ica_decomposition_finished()
+
+    def source_estimation(self, source_estimation_method, save_data, load_data, n_jobs):
+        pool = QThreadPool.globalInstance()
+        self.source_estimation_runnable = sourceEstimationRunnable(source_estimation_method, self.file_data,
+                                                                   self.get_file_path_name_without_extension(),
+                                                                   save_data, load_data, n_jobs)
+        pool.start(self.source_estimation_runnable)
+        self.source_estimation_runnable.signals.finished.connect(self.source_estimation_finished)
+
+    def source_estimation_finished(self):
+        source_estimation_data = self.source_estimation_runnable.get_source_estimation_data()
+        self.main_listener.source_estimation_finished(source_estimation_data)
+
+    """
+    Plot menu
+    """
+    def power_spectral_density(self, method_psd, minimum_frequency, maximum_frequency):
+        pool = QThreadPool.globalInstance()
+        self.power_spectral_density_runnable = powerSpectralDensityRunnable(self.file_data, method_psd, minimum_frequency, maximum_frequency)
+        pool.start(self.power_spectral_density_runnable)
+        self.power_spectral_density_runnable.signals.finished.connect(self.power_spectral_density_finished)
+
+    def power_spectral_density_finished(self):
+        psds = self.power_spectral_density_runnable.get_psds()
+        freqs = self.power_spectral_density_runnable.get_freqs()
+        self.main_listener.plot_spectra_maps_finished(psds, freqs)
 
     """
     Getters
@@ -98,6 +169,9 @@ class mainModel:
 
     def get_file_path_name(self):
         return self.file_path_name
+
+    def get_file_path_name_without_extension(self):
+        return splitext(self.file_path_name)[0]
 
     def get_file_type(self):
         return self.file_type
@@ -130,7 +204,7 @@ class mainModel:
         return len(self.file_data.times)
 
     def get_reference(self):
-        return "Unknown"
+        return self.references
 
     def get_channels_locations_status(self):
         if not self.channels_locations:     # channels_locations dictionary is empty.
@@ -142,7 +216,7 @@ class mainModel:
         return self.channels_locations
 
     def get_ica(self):
-        return "No"
+        return self.ica_decomposition
 
     def get_dataset_size(self):
         if self.file_path_name[-3:] == "set":
@@ -155,3 +229,9 @@ class mainModel:
 
     def get_file_data(self):
         return self.file_data
+
+    """
+    Setters
+    """
+    def set_listener(self, listener):
+        self.main_listener = listener

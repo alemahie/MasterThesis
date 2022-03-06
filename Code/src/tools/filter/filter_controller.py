@@ -33,6 +33,9 @@ class filterController(filterListener):
         self.main_listener.filter_information(low_frequency, high_frequency, channels_selected)
         self.filter_view.close()
 
+    """
+    Getters
+    """
     def get_channels_selected(self, channels_selected):
         self.filter_view.set_channels_selected(channels_selected)
 

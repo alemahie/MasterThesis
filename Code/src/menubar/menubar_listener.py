@@ -82,7 +82,7 @@ class menubarListener(ABC):
         pass
 
     @abstractmethod
-    def decompose_ICA_clicked(self):
+    def ica_decomposition_clicked(self):
         pass
 
     @abstractmethod

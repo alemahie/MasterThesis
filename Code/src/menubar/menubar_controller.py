@@ -80,8 +80,8 @@ class menubarController(menubarListener):
     def inspect_reject_data_clicked(self):
         self.main_listener.inspect_reject_data_clicked()
 
-    def decompose_ICA_clicked(self):
-        self.main_listener.decompose_ICA_clicked()
+    def ica_decomposition_clicked(self):
+        self.main_listener.ica_decomposition_clicked()
 
     def source_estimation_clicked(self):
         self.main_listener.source_estimation_clicked()

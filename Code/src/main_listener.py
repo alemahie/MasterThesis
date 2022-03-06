@@ -28,7 +28,15 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def open_cnt_file_finished(self):
+        pass
+
+    @abstractmethod
     def open_set_file_clicked(self, path_to_file):
+        pass
+
+    @abstractmethod
+    def open_set_file_finished(self):
         pass
 
     @abstractmethod
@@ -90,11 +98,27 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
-    def decompose_ICA_clicked(self):
+    def ica_decomposition_clicked(self):
+        pass
+
+    @abstractmethod
+    def ica_decomposition_information(self, ica_method):
+        pass
+
+    @abstractmethod
+    def ica_decomposition_finished(self):
         pass
 
     @abstractmethod
     def source_estimation_clicked(self):
+        pass
+
+    @abstractmethod
+    def source_estimation_information(self, source_estimation_method, save_data, load_data, n_jobs):
+        pass
+
+    @abstractmethod
+    def source_estimation_finished(self, source_estimation_data):
         pass
 
     # Plot menu
@@ -111,11 +135,23 @@ class mainListener(ABC):
         pass
 
     @abstractmethod
+    def plot_spectra_maps_information(self, method_psd, minimum_frequency, maximum_frequency):
+        pass
+
+    @abstractmethod
+    def plot_spectra_maps_finished(self, psds, freqs):
+        pass
+
+    @abstractmethod
     def plot_channel_properties_clicked(self):
         pass
 
     @abstractmethod
     def plot_ERP_image_clicked(self):
+        pass
+
+    @abstractmethod
+    def plot_ERP_image_information(self, channels_selected):
         pass
 
     @abstractmethod

@@ -18,7 +18,7 @@ __status__ = "Dev"
 
 
 class channelsSelectorView(QWidget):
-    def __init__(self, all_channels_names, box_checked):
+    def __init__(self, all_channels_names, title, box_checked):
         super().__init__()
         self.channels_selector_listener = None
 
@@ -58,7 +58,7 @@ class channelsSelectorView(QWidget):
         self.cancel_confirm_layout.addWidget(self.confirm)
         self.cancel_confirm_widget.setLayout(self.cancel_confirm_layout)
 
-        self.vertical_layout.addWidget(QLabel("Select the channels used for the re-referencing :"))
+        self.vertical_layout.addWidget(QLabel(title))
         self.vertical_layout.addWidget(self.scroll_area)
         self.vertical_layout.addWidget(self.cancel_confirm_widget)
 

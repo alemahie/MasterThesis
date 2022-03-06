@@ -12,6 +12,7 @@ from PySide6.QtWidgets import QApplication
 from main_model import mainModel
 from main_view import mainView
 from main_listener import mainListener
+
 from menubar.menubar_controller import menubarController
 
 from edit.dataset_info.dataset_info_controller import datasetInfoController
@@ -20,6 +21,14 @@ from edit.channel_location.channel_location_controller import channelLocationCon
 from tools.filter.filter_controller import filterController
 from tools.resampling.resampling_controller import resamplingController
 from tools.re_referencing.re_referencing_controller import reReferencingController
+from tools.ICA_decomposition.ICA_decomposition_controller import icaDecompositionController
+from tools.source_estimation.source_estimation_controller import sourceEstimationController
+
+from plots.power_spectral_density.power_spectral_density_controller import powerSpectralDensityController
+from plots.erp.erp_controller import erpController
+
+from utils.stylesheet import get_stylesheet
+from utils.waiting_while_processing.waiting_while_processing_controller import waitingWhileProcessingController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -34,8 +43,10 @@ __status__ = "Dev"
 class mainController(mainListener):
     def __init__(self):
         self.main_model = mainModel()
+        self.main_model.set_listener(self)
 
         self.app = QApplication()
+        self.app.setStyleSheet(get_stylesheet())
 
         self.main_view = mainView()
         self.screen_size = self.get_screen_geometry()
@@ -52,6 +63,13 @@ class mainController(mainListener):
         self.filter_controller = None
         self.resampling_controller = None
         self.re_referencing_controller = None
+        self.ica_decomposition_controller = None
+        self.source_estimation_controller = None
+
+        self.power_spectral_density_controller = None
+        self.erp_controller = None
+
+        self.waiting_while_processing_controller = None
 
         self.main_view.show()
 
@@ -70,11 +88,23 @@ class mainController(mainListener):
         self.display_all_info()
 
     def open_cnt_file_clicked(self, path_to_file):
+        processing_title = "CNT file reading running, please wait."
+        self.waiting_while_processing_controller = waitingWhileProcessingController(processing_title)
         self.main_model.open_cnt_file(path_to_file)
+
+    def open_cnt_file_finished(self):
+        processing_title_finished = "CNT file reading finished."
+        self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
         self.display_all_info()
 
     def open_set_file_clicked(self, path_to_file):
+        processing_title = "SET file reading running, please wait."
+        self.waiting_while_processing_controller = waitingWhileProcessingController(processing_title)
         self.main_model.open_set_file(path_to_file)
+
+    def open_set_file_finished(self):
+        processing_title_finished = "SET file reading finished."
+        self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
         self.display_all_info()
 
     def save_file_clicked(self):
@@ -150,11 +180,34 @@ class mainController(mainListener):
     def inspect_reject_data_clicked(self):
         pass
 
-    def decompose_ICA_clicked(self):
-        pass
+    def ica_decomposition_clicked(self):
+        self.ica_decomposition_controller = icaDecompositionController()
+        self.ica_decomposition_controller.set_listener(self)
+
+    def ica_decomposition_information(self, ica_method):
+        processing_title = "ICA decomposition running, please wait."
+        self.waiting_while_processing_controller = waitingWhileProcessingController(processing_title)
+        self.main_model.ica_data_decomposition(ica_method)
+
+    def ica_decomposition_finished(self):
+        ica_status = self.main_model.get_ica()
+        self.main_view.update_ica_decomposition(ica_status)
+        processing_title_finished = "ICA decomposition finished."
+        self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
 
     def source_estimation_clicked(self):
-        pass
+        self.source_estimation_controller = sourceEstimationController()
+        self.source_estimation_controller.set_listener(self)
+
+    def source_estimation_information(self, source_estimation_method, save_data, load_data, n_jobs):
+        processing_title = "Source estimation running, please wait."
+        self.waiting_while_processing_controller = waitingWhileProcessingController(processing_title)
+        self.main_model.source_estimation(source_estimation_method, save_data, load_data, n_jobs)
+
+    def source_estimation_finished(self, source_estimation_data):
+        processing_title_finished = "Source estimation finished."
+        self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
+        self.source_estimation_controller.plot_source_estimation(source_estimation_data)
 
     """
     Plot menu
@@ -169,13 +222,30 @@ class mainController(mainListener):
         self.main_view.plot_data(file_data, file_type)
 
     def plot_spectra_maps_clicked(self):
-        pass
+        self.power_spectral_density_controller = powerSpectralDensityController()
+        self.power_spectral_density_controller.set_listener(self)
+
+    def plot_spectra_maps_information(self, method_psd, minimum_frequency, maximum_frequency):
+        processing_title = "PSD running, please wait."
+        self.waiting_while_processing_controller = waitingWhileProcessingController(processing_title)
+        self.main_model.power_spectral_density(method_psd, minimum_frequency, maximum_frequency)
+
+    def plot_spectra_maps_finished(self, psds, freqs):
+        processing_title_finished = "PSD finished."
+        self.waiting_while_processing_controller.stop_progress_bar(processing_title_finished)
+        self.power_spectral_density_controller.plot_psd(psds, freqs)
 
     def plot_channel_properties_clicked(self):
         pass
 
     def plot_ERP_image_clicked(self):
-        pass
+        all_channels_names = self.main_model.get_all_channels_names()
+        self.erp_controller = erpController(all_channels_names)
+        self.erp_controller.set_listener(self)
+
+    def plot_ERP_image_information(self, channels_selected):
+        file_data = self.main_model.get_file_data()
+        self.main_view.plot_erps(file_data, channels_selected)
 
     def plot_time_frequency_clicked(self):
         pass

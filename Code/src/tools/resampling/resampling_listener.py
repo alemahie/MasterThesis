@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Resampling listener
 """
 
 from abc import ABC, abstractmethod

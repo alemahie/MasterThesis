@@ -41,7 +41,7 @@ class reReferencingView(QWidget):
         self.channel_check_box = QCheckBox()
         self.channel_check_box.setText("Re-reference data to channel(s) : ")
         self.re_referencing_mode_buttons.addButton(self.channel_check_box, 2)  # Button with ID 2
-        self.channels_selection_button = QPushButton("&...", self)
+        self.channels_selection_button = QPushButton("&Channels ...", self)
         self.channels_selection_button.clicked.connect(self.channels_selection_trigger)
 
         self.check_box_layout = QGridLayout()
@@ -86,7 +86,8 @@ class reReferencingView(QWidget):
             self.re_referencing_listener.confirm_button_clicked(references)
 
     def channels_selection_trigger(self):
-        self.channels_selector_controller = channelsSelectorController(self.all_channels_names, box_checked=False)
+        title = "Select the channels used for the re-referencing :"
+        self.channels_selector_controller = channelsSelectorController(self.all_channels_names, title, box_checked=False)
         self.channels_selector_controller.set_listener(self.re_referencing_listener)
 
     """

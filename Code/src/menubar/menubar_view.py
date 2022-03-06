@@ -121,13 +121,11 @@ class menubarView(QMenuBar):
         self.tools_menu.addAction(inspect_reject_data_action)
         self.tools_menu.addSeparator()
         decompose_ICA_action = QAction("&Decompose data with ICA", self)
-        decompose_ICA_action.triggered.connect(self.decompose_ICA_trigger)
-        decompose_ICA_action.setEnabled(False)
+        decompose_ICA_action.triggered.connect(self.ica_decomposition_trigger)
         self.tools_menu.addAction(decompose_ICA_action)
         self.tools_menu.addSeparator()
         source_estimation_action = QAction("&Source estimation", self)
         source_estimation_action.triggered.connect(self.source_estimation_trigger)
-        source_estimation_action.setEnabled(False)
         self.tools_menu.addAction(source_estimation_action)
 
     def create_plot_menu(self):
@@ -138,9 +136,8 @@ class menubarView(QMenuBar):
         plot_data_action = QAction("&Channel data", self)
         plot_data_action.triggered.connect(self.plot_data_trigger)
         self.plot_menu.addAction(plot_data_action)
-        plot_channel_spectra_maps_action = QAction("&Channel spectra and maps (PSD)", self)
+        plot_channel_spectra_maps_action = QAction("&Channel spectra (PSD)", self)
         plot_channel_spectra_maps_action.triggered.connect(self.plot_spectra_maps_trigger)
-        plot_channel_spectra_maps_action.setEnabled(False)
         self.plot_menu.addAction(plot_channel_spectra_maps_action)
         plot_channel_properties_action = QAction("&Channel properties", self)
         plot_channel_properties_action.triggered.connect(self.plot_channel_properties_trigger)
@@ -148,7 +145,6 @@ class menubarView(QMenuBar):
         self.plot_menu.addAction(plot_channel_properties_action)
         plot_ERP_image_action = QAction("&Channel ERP image", self)
         plot_ERP_image_action.triggered.connect(self.plot_ERP_image_trigger)
-        plot_ERP_image_action.setEnabled(False)
         self.plot_menu.addAction(plot_ERP_image_action)
         plot_time_frequency_action = QAction("&Channel time-frequency (ERSP/ITC)", self)
         plot_time_frequency_action.triggered.connect(self.plot_time_frequency_trigger)
@@ -227,8 +223,8 @@ class menubarView(QMenuBar):
     def inspect_reject_data_trigger(self):
         self.menubarListener.inspect_reject_data_clicked()
 
-    def decompose_ICA_trigger(self):
-        self.menubarListener.decompose_ICA_clicked()
+    def ica_decomposition_trigger(self):
+        self.menubarListener.ica_decomposition_clicked()
 
     def source_estimation_trigger(self):
         self.menubarListener.source_estimation_clicked()

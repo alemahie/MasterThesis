@@ -56,6 +56,10 @@ class mainView(QMainWindow):
         else:
             file_data.plot(scalings="auto", n_epochs=5, n_channels=10)
 
+    def plot_erps(self, file_data, channels_selected):
+        erps = file_data.average()
+        erps.plot_joint(picks=channels_selected)
+
     """
     Updates
     """
@@ -67,13 +71,17 @@ class mainView(QMainWindow):
         label_item = self.grid_layout.itemAtPosition(3, 1).widget()
         label_item.setText(str(frequency))
 
-    def update_dataset_size(self, dataset_size):
-        label_item = self.grid_layout.itemAtPosition(12, 1).widget()
-        label_item.setText(str(dataset_size))
-
     def update_reference(self, references):
         label_item = self.grid_layout.itemAtPosition(9, 1).widget()
         label_item.setText(str(references))
+
+    def update_ica_decomposition(self, ica_status):
+        label_item = self.grid_layout.itemAtPosition(11, 1).widget()
+        label_item.setText(str(ica_status))
+
+    def update_dataset_size(self, dataset_size):
+        label_item = self.grid_layout.itemAtPosition(12, 1).widget()
+        label_item.setText(str(dataset_size))
 
     """
     Getters

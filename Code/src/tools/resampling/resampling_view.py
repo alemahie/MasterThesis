@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main controller
+Resampling view
 """
 
 from PySide6.QtWidgets import QWidget, QGridLayout, QSpinBox, QPushButton, QLabel

@@ -5,9 +5,10 @@
 Main controller
 """
 
-from PySide6.QtWidgets import QWidget, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel, QCheckBox, \
-                              QScrollArea, QPushButton
+from PySide6.QtWidgets import QWidget, QGridLayout, QLineEdit, QLabel, QPushButton
 from PySide6.QtGui import QDoubleValidator
+
+from utils.channels_selector.channels_selector_controller import channelsSelectorController
 
 __author__ = "Lemahieu Antoine"
 __copyright__ = "Copyright 2021"
@@ -18,8 +19,6 @@ __maintainer__ = "Lemahieu Antoine"
 __email__ = "Antoine.Lemahieu@ulb.be"
 __status__ = "Dev"
 
-from utils.channels_selector.channels_selector_controller import channelsSelectorController
-
 
 class filterView(QWidget):
     def __init__(self, all_channels_names):
@@ -29,14 +28,12 @@ class filterView(QWidget):
         self.channels_selector_controller = None
         self.channels_selected = None
 
-        self.low_frequency_line = QLineEdit()
-        self.low_frequency_line.setText("0,1")
+        self.low_frequency_line = QLineEdit("0,1")
         self.low_frequency_line.setValidator(QDoubleValidator())
-        self.high_frequency_line = QLineEdit()
-        self.high_frequency_line.setText("45")
+        self.high_frequency_line = QLineEdit("45,0")
         self.high_frequency_line.setValidator(QDoubleValidator())
 
-        self.channels_selection_button = QPushButton("&...", self)
+        self.channels_selection_button = QPushButton("&Channels ...", self)
         self.channels_selection_button.clicked.connect(self.channels_selection_trigger)
 
         self.cancel = QPushButton("&Cancel", self)
@@ -73,17 +70,11 @@ class filterView(QWidget):
         if self.high_frequency_line.hasAcceptableInput():
             high_frequency = self.high_frequency_line.text()
             high_frequency = float(high_frequency.replace(',', '.'))
-        if self.channels_selected is None:
-            print("No channel selected for filtering")
-        if low_frequency is None:
-            print("Error low freq")
-        elif high_frequency is None:
-            print("Error high freq")
-        else:
-            self.filter_listener.confirm_button_clicked(low_frequency, high_frequency, self.channels_selected)
+        self.filter_listener.confirm_button_clicked(low_frequency, high_frequency, self.channels_selected)
 
     def channels_selection_trigger(self):
-        self.channels_selector_controller = channelsSelectorController(self.all_channels_names, box_checked=False)
+        title = "Select the channels used for the filtering :"
+        self.channels_selector_controller = channelsSelectorController(self.all_channels_names, title, box_checked=True)
         self.channels_selector_controller.set_listener(self.filter_listener)
 
     """

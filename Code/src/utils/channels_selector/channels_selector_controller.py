@@ -19,9 +19,9 @@ __status__ = "Dev"
 
 
 class channelsSelectorController(channelsSelectorListener):
-    def __init__(self, all_channels_names, box_checked=True):
+    def __init__(self, all_channels_names, title, box_checked=True):
         self.main_listener = None
-        self.channels_selector_view = channelsSelectorView(all_channels_names, box_checked)
+        self.channels_selector_view = channelsSelectorView(all_channels_names, title, box_checked)
         self.channels_selector_view.set_listener(self)
 
         self.channels_selector_view.show()
